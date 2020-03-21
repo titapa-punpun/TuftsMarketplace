@@ -21,6 +21,15 @@ class CreateUser extends React.Component {
     handleSubmit(event) {
         this.setState({value: '', submitted: true});
         /* Here, call backend and give it the username. */
+        const body = {
+            username: this.state.value,
+        };
+        fetch('http://127.0.0.1:5000/submitUser',
+            {method: 'POST',
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json'
+                }})
         event.preventDefault();
     }
 
