@@ -18,21 +18,44 @@ cursor = connection.cursor()
 # Print PostgreSQL Connection properties
 # print ( connection.get_dsn_parameters(),"\n")
 
-class HelloWorld(Resource):
-    def post(self):
-        content = request.json # extracts things from json request
-        username = content.get('username') # extracts only username, which is stored as value
-        print(username)
-        cursor.execute("SELECT * FROM table_1 WHERE name='" + username + "';")
-        if cursor.rowcount != 0:
-            abort(406)
-            return 406
-        cursor.execute("INSERT INTO table_1 (name) VALUES ('" + username + "');")
-        connection.commit()
-        return 200
+@app.route('/submitUser', methods=['POST'])
+def submitUser():
+    content = request.json # extracts things from json request
+    username = content.get('username') # extracts only username, which is stored as value
+    print(username)
+    cursor.execute("SELECT * FROM table_1 WHERE name='" + username + "';")
+    if cursor.rowcount != 0:
+        abort(406)
+        return 406
+    cursor.execute("INSERT INTO table_1 (name) VALUES ('" + username + "');")
+    connection.commit()
+    return {'success': True}
+
+@app.route('/verifyUser', methods=['POST'])
+def verifyUser():
+    content = request.json # extracts things from json request ('body' in frontend)
+    username = content.get('username') # extracts only username from frontend, which is stored as value
+    print(username)
+    cursor.execute("SELECT * FROM table_1 WHERE name='" + username + "';")
+    if cursor.rowcount != 1:
+        abort(401)
+        return 401
+    return {'success': True}
+
+@app.route('/addItem', methods=['POST'])
+def addItem():
+    content = request.json
+    itemName = "'" + content.get('itemName') + "',"
+    description = "'" + content.get('description') + "',"
+    price = "'" + content.get('price') + "',"
+    sellerID = "'" + content.get('sellerID') + "',"
+    quantity = "'" + content.get('quantity') + "'"
+    cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quatity) "
+                   "VALUES (" + itemName + description + price + sellerID + quantity + ")")
+    connection.commit()
+    return {'success': True}
 
 
-api.add_resource(HelloWorld, '/submitUser')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,12 +1,12 @@
 import React from 'react';
 
 
-class CreateUser extends React.Component {
+class Home extends React.Component {
     /* creating constructor */
     constructor(props) {
         super(props);
         /* Initializing 2 vars */
-        this.state = {value: '', submitted: false};
+        this.state = {value: '', loggedIn: false};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -14,18 +14,16 @@ class CreateUser extends React.Component {
 
     /* defining handleChange function */
     handleChange(event) {
-        // gets value that user types in
         this.setState({value: event.target.value});
     }
 
     /* defining handleSubmit function */
     handleSubmit(event) {
-        this.setState({value: '', submitted: ''});
-        /* Here, call backend and give it the username. */
+        this.setState({value: ''});
         const body = {
             username: this.state.value,
         };
-        fetch('http://127.0.0.1:5000/submitUser',
+        fetch('http://127.0.0.1:5000/verifyUser',
             {method: 'POST',
                 body: JSON.stringify(body),
                 headers: {
@@ -34,11 +32,10 @@ class CreateUser extends React.Component {
             .then(response => response.status)
             .then(status => {
                 if (status !== 200){
-                    this.setState({submitted: 'Username already exists. Please try again.'})
-                    console.log('big bad')
+                    console.log('user doesnt exist')
                 } else {
-                    this.setState({submitted: 'Username successfully submitted!'})
-                    console.log('success')
+                    this.setState({loggedIn: true})
+                    console.log('user exists')
                 }
             }).catch(x => {
             console.log('no data', x)
@@ -48,19 +45,26 @@ class CreateUser extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                <form onSubmit = {this.handleSubmit}>
-                    <label>
-                        Username:
-                        <input type = "text" value = {this.state.value} onChange = {this.handleChange} />
-                    </label>
+        if (!(this.state.loggedIn))
+            return (
+                <div>
+                    <form onSubmit = {this.handleSubmit}>
+                        <label>
+                            Login:
+                            <input type = "text" value = {this.state.value} onChange = {this.handleChange} />
+                        </label>
                         <input type = "submit" value = "Submit" />
-                </form>
-                {this.state.submitted}
-            </div>
-        );
+                    </form>
+                    Your username doesn't exist. Please create a new user.
+                </div>
+            );
+        else
+            return (
+                <div>
+                    You are now logged in!
+                </div>
+            )
     }
 }
 
-export default CreateUser;
+export default Home;
