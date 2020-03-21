@@ -1,9 +1,12 @@
-from flask import Flask, request
+# coding=utf-8
+from flask import Flask, request, abort
 from flask_restful import Resource, Api
 import psycopg2
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 connection = psycopg2.connect(user = "titapapunne",
                               password = "",
@@ -20,9 +23,14 @@ class HelloWorld(Resource):
         content = request.json # extracts things from json request
         username = content.get('username') # extracts only username, which is stored as value
         print(username)
+        cursor.execute("SELECT * FROM table_1 WHERE name='" + username + "';")
+        if cursor.rowcount != 0:
+            abort(406)
+            return 406
         cursor.execute("INSERT INTO table_1 (name) VALUES ('" + username + "');")
         connection.commit()
-        return {'hello': 'world'}
+        return 200
+
 
 api.add_resource(HelloWorld, '/submitUser')
 

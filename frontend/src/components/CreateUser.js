@@ -19,7 +19,7 @@ class CreateUser extends React.Component {
 
     /* defining handleSubmit function */
     handleSubmit(event) {
-        this.setState({value: '', submitted: true});
+        this.setState({value: '', submitted: ''});
         /* Here, call backend and give it the username. */
         const body = {
             username: this.state.value,
@@ -30,6 +30,19 @@ class CreateUser extends React.Component {
                 headers: {
                     'Content-Type': 'application/json'
                 }})
+            .then(response => response.status)
+            .then(status => {
+                if (status !== 200){
+                    this.setState({submitted: 'Username already exists. Please try again.'})
+                    console.log('big bad')
+                } else {
+                    this.setState({submitted: 'Username successfully submitted!'})
+                    console.log('success')
+                }
+            }).catch(x => {
+            console.log('no data', x)
+            return('no data')
+        })
         event.preventDefault();
     }
 
@@ -43,7 +56,7 @@ class CreateUser extends React.Component {
                     </label>
                         <input type = "submit" value = "Submit" />
                 </form>
-                {this.state.submitted ? 'Successfully submitted username!' : ''}
+                {this.state.submitted}
             </div>
         );
     }
