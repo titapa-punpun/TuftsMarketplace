@@ -50,10 +50,47 @@ def addItem():
     price = "'" + content.get('price') + "',"
     sellerID = "'" + content.get('sellerID') + "',"
     quantity = "'" + content.get('quantity') + "'"
-    cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quatity) "
+    cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quantity) "
                    "VALUES (" + itemName + description + price + sellerID + quantity + ")")
     connection.commit()
     return {'success': True}
+
+@app.route('/getAllItems', methods=['GET'])
+def getAllItems():
+    content = request.json
+    cursor.execute("SELECT * FROM items")
+    rows = cursor.fetchall()
+    print("Rows: ", rows)
+    listOfDicts = []
+    for row in rows:
+        itemDict = dict()
+        itemDict['itemID'] = row[0]
+        itemDict['itemName'] = row[1]
+        itemDict['itemDescription'] = row[2]
+        itemDict['itemPrice'] = row[3]
+        itemDict['itemSellerID'] = row[4]
+        itemDict['itemBuyerID'] = row[5]
+        itemDict['itemQuantity'] = row[6]
+        listOfDicts.append(itemDict)
+
+    print(listOfDicts)
+
+    dictItems = dict()
+    dictItems['allItems'] = listOfDicts
+
+    # connection.commit()
+    return dictItems
+
+# @app.route('/buyItem', methods=['POST'])
+# def buyItem():
+#     content = request.json
+#     itemName = "'" + content.get('itemName') + "',"
+#     quantity = "'" + content.get('quantity') + "'"
+#     cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quatity) "
+#                    "VALUES (" + itemName + description + price + sellerID + quantity + ")")
+#     connection.commit()
+#     return {'success': True}
+
 
 
 

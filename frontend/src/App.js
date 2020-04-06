@@ -1,28 +1,38 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    Redirect
 } from "react-router-dom";
 import CreateUser from './components/CreateUser'
+import Login from './components/Login'
 import Home from './components/Home'
+import SearchItem from './components/SearchItem'
 
 export default function App() {
+    const [loggedIn, setLoggedIn] = useState(false);
     return (
         <Router>
             <div>
                 {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
+                renders the first one that matches the current URL. */}
                 <Switch>
-                    <Route path="/createUser">
+                    <Route exact path="/createUser">
                         <CreateUser/>
                     </Route>
-                    <Route path="/users">
-                        <Users />
+                    <Route exact path="/users">
+                        <Users/>
                     </Route>
-                    <Route path="/">
-                        <Home />
+                    <Route exact path="/login">
+                        <Login setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>
+                    </Route>
+                    <Route exact path="/home">
+                        {loggedIn ? <Home/> : <Redirect to="/login" />}
+                    </Route>
+                    <Route exact path="/">
+                        {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
                     </Route>
                 </Switch>
             </div>
