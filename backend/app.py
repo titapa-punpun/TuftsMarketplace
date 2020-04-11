@@ -81,6 +81,7 @@ def getAllItems():
     # connection.commit()
     return dictItems
 
+
 # @app.route('/buyItem', methods=['POST'])
 # def buyItem():
 #     content = request.json

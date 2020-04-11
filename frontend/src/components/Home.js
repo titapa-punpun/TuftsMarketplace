@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 
 class Home extends React.Component {
@@ -33,8 +34,13 @@ class Home extends React.Component {
                                        Description: {item.itemDescription} <br/>
                                        Price: ${item.itemPrice} <br/>
                                        Quantity: {item.itemQuantity} <br/> </div>))}
+                <br/>
+                <p>If you want to list item(s) to sell:</p>
+                <ul>
+                    <Link to="/addItems">Add Items</Link>
+                </ul>
             </div>
-        )
+        );
     }
 }
 
