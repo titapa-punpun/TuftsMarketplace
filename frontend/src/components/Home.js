@@ -35,7 +35,7 @@ class Home extends React.Component {
                                        Price: ${item.itemPrice} <br/>
                                        Quantity: {item.itemQuantity} <br/> </div>))}
                 <br/>
-                <p>If you want to list item(s) to sell:</p>
+                <p>If you want to add item(s) to sell:</p>
                 <ul>
                     <Link to="/addItems">Add Items</Link>
                 </ul>
