@@ -37,7 +37,7 @@ class Home extends React.Component {
                 <br/>
                 <p>If you want to add item(s) to sell:</p>
                 <ul>
-                    <Link to="/addItems">Add Items</Link>
+                    <Link to="/addItem">Add Items</Link>
                 </ul>
             </div>
         );

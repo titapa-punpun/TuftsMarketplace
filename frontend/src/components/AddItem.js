@@ -6,27 +6,41 @@
 // do a handlechange, handlesubmit
 
 import React from 'react';
-
+import ReactDOM from 'react-dom';
 
 class AddItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {value: ''};
+        /* Initializing object properties */
+        var item = {
+            name: '',
+            description: '',
+            price: '',
+            quantity: '',
+            sellerID: '',
+        };
+        this.state = {item: item};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    /* defining handleChange function */
     handleChange(event) {
         // gets value that user types in
-        this.setState({value: event.target.value});
+        this.setState({
+            item: event.target.item
+        });
     }
 
+    /* defining handleSubmit function */
     handleSubmit(event) {
-        this.setState({value: ''});
-        /* Here, call backend and give it the item information. */
+        this.setState({
+            item: event.target.item
+        });
+        /* Here, call backend and give it item info. */
         const body = {
-            item: this.state.value,
+            item: this.state.item,
         };
         fetch('http://127.0.0.1:5000/addItem',
             {method: 'POST',
@@ -34,20 +48,68 @@ class AddItem extends React.Component {
                 headers: {
                     'Content-Type': 'application/json'
                 }})
+            .then(response => response.status)
+            .then(status => {
+                if (status !== 200){
+                    this.setState({submitted: 'Username already exists. Please try again.'})
+                    console.log('big bad')
+                } else {
+                    this.setState({submitted: 'Username successfully submitted!'})
+                    console.log('success')
+                }
+            }).catch(x => {
+            console.log('no data', x)
+            return('no data')
+        })
         event.preventDefault();
     }
 
     render() {
+        console.log(this.state.item)
         return (
             <div>
                 <form onSubmit = {this.handleSubmit}>
                     <label>
-                        Item:
-                        <input type = "text" value = {this.state.value} onChange = {this.handleChange} />
+                        Item Name:
+                        <input
+                            type = "text"
+                            name = {this.state.item.name}
+                            onChange = {this.handleChange}
+                        />
                     </label>
-                    <input type = "submit" value = "Submit" />
+                    <label>
+                        Item Description:
+                        <input
+                            type = "text"
+                            description = {this.state.item.description}
+                            onChange = {this.handleChange}
+                        />
+                    </label>
+                    <label>
+                        Item Price:
+                        <input
+                            type = "text"
+                            price = {this.state.item.price}
+                            onChange = {this.handleChange}
+                        />
+                    </label>
+                    <label>
+                        Quantity of Item:
+                        <input
+                            type = "text"
+                            quantity = {this.state.item.quantity}
+                            onChange = {this.handleChange}
+                        />
+                    </label>
+                    <label>
+                        Seller ID:
+                        <input
+                            type = "text"
+                            quantity = {this.state.item.sellerID}
+                            onChange = {this.handleChange}
+                        />
+                    </label>
                 </form>
-                {this.state.submitted}
             </div>
         );
     }
