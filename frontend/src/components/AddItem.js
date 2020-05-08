@@ -2,8 +2,9 @@
 // test the endpoint using postman -- DONE
 // make a route to the new page -- DONE
 // make a link (from home page) to the new page (from the package called react router dom) -- DONE
-// make empty form (itemName, description, price, quantity)
-// do a handlechange, handlesubmit
+// make empty form (itemName, description, price, quantity) -- DONE
+// write handlechange -- DONE
+// write handlesubmit
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -26,15 +27,18 @@ class AddItem extends React.Component {
     }
 
     /* defining handleChange function */
-    handleChange(event) {
+    handleChange(event, field) {
+        const {item} = this.state // extracting item from state
+        item[field] = event.target.value
         // gets value that user types in
         this.setState({
-            item: event.target.item
-        });
+            item: item
+        })
     }
 
     /* defining handleSubmit function */
     handleSubmit(event) {
+        console.log('in handleSubmit')
         this.setState({
             item: event.target.item
         });
@@ -50,7 +54,7 @@ class AddItem extends React.Component {
                 }})
             .then(response => response.status)
             .then(status => {
-                if (status !== 200){
+                if (status != 200){
                     this.setState({submitted: 'Username already exists. Please try again.'})
                     console.log('big bad')
                 } else {
@@ -65,7 +69,7 @@ class AddItem extends React.Component {
     }
 
     render() {
-        console.log(this.state.item)
+        const {item} = this.state
         return (
             <div>
                 <form onSubmit = {this.handleSubmit}>
@@ -74,7 +78,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             name = {this.state.item.name}
-                            onChange = {this.handleChange}
+                            onChange = {(event) => event.target.value}
                         />
                     </label>
                     <label>
@@ -82,7 +86,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             description = {this.state.item.description}
-                            onChange = {this.handleChange}
+                            onChange = {(event) => this.state.item.description}
                         />
                     </label>
                     <label>
@@ -90,7 +94,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             price = {this.state.item.price}
-                            onChange = {this.handleChange}
+                            onChange = {(event) => this.state.item.price}
                         />
                     </label>
                     <label>
@@ -98,7 +102,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             quantity = {this.state.item.quantity}
-                            onChange = {this.handleChange}
+                            onChange = {(event) => this.state.item.quantity}
                         />
                     </label>
                     <label>
@@ -106,9 +110,10 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             quantity = {this.state.item.sellerID}
-                            onChange = {this.handleChange}
+                            onChange = {(event) => this.state.item.sellerID}
                         />
                     </label>
+                    <input type = "submit" value = "Submit" />
                 </form>
             </div>
         );

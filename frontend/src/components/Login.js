@@ -21,7 +21,7 @@ class Login extends React.Component {
 
     /* defining handleSubmit function */
     handleSubmit(event) {
-        const {setLoggedIn} = this.props;
+        const {setLoggedIn} = this.props; // extraction
         this.setState({value: ''});
         const body = {
             username: this.state.value,

@@ -30,7 +30,7 @@ export default function App() {
                         <Login setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>
                     </Route>
                     <Route exact path="/home">
-                        {loggedIn ? <Home/> : <Redirect to="/login" />} // if loggedIn true, go to Home; otherwise redirect.
+                        {loggedIn ? <Home/> : <Redirect to="/login" />}
                     </Route>
                     <Route exact path="/addItem">
                         {loggedIn ? <AddItem/> : <Redirect to="/login" />}
