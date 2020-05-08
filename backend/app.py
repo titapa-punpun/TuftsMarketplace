@@ -45,11 +45,12 @@ def verifyUser():
 @app.route('/addItem', methods=['POST'])
 def addItem():
     content = request.json
-    itemName = "'" + content.get('itemName') + "',"
+    itemName = "'" + content.get('name') + "',"
+    print(itemName)
     description = "'" + content.get('description') + "',"
     price = "'" + content.get('price') + "',"
-    sellerID = "'" + content.get('sellerID') + "',"
     quantity = "'" + content.get('quantity') + "'"
+    sellerID = "'" + content.get('sellerID') + "',"
     cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quantity) "
                    "VALUES (" + itemName + description + price + sellerID + quantity + ")")
     connection.commit()

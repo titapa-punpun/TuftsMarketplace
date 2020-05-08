@@ -39,9 +39,6 @@ class AddItem extends React.Component {
     /* defining handleSubmit function */
     handleSubmit(event) {
         console.log('in handleSubmit')
-        this.setState({
-            item: event.target.item
-        });
         /* Here, call backend and give it item info. */
         const body = {
             item: this.state.item,
@@ -77,8 +74,8 @@ class AddItem extends React.Component {
                         Item Name:
                         <input
                             type = "text"
-                            name = {this.state.item.name}
-                            onChange = {(event) => event.target.value}
+                            name = {item.name}
+                            onChange = {(event) => this.handleChange(event, 'name')}
                         />
                     </label>
                     <label>
