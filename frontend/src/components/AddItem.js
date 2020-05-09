@@ -20,7 +20,7 @@ class AddItem extends React.Component {
             quantity: '',
             sellerID: '',
         };
-        this.state = {item: item};
+        this.state = {item: item, submitted: false};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,7 +38,6 @@ class AddItem extends React.Component {
 
     /* defining handleSubmit function */
     handleSubmit(event) {
-        console.log('in handleSubmit')
         /* Here, call backend and give it item info. */
         const body = {
             item: this.state.item,
@@ -52,10 +51,10 @@ class AddItem extends React.Component {
             .then(response => response.status)
             .then(status => {
                 if (status != 200){
-                    this.setState({submitted: 'Username already exists. Please try again.'})
+                    this.setState({submitted: 'Item submission failed.'})
                     console.log('big bad')
                 } else {
-                    this.setState({submitted: 'Username successfully submitted!'})
+                    this.setState({submitted: 'Item successfully submitted!'})
                     console.log('success')
                 }
             }).catch(x => {
@@ -65,11 +64,31 @@ class AddItem extends React.Component {
         event.preventDefault();
     }
 
+    handleValidation(event, field) {
+        console.log('in handleValidation')
+        let item = this.state.item;
+        let formIsValid = true;
+
+        console.log('item: ', item[field]);
+
+        if (!item[field]) {
+            formIsValid = false;
+            this.setState({submitted: 'Field(s) cannot be left blank.'})
+            console.log('Form empty')
+        }
+        return formIsValid;
+    }
+
     render() {
         const {item} = this.state
         return (
             <div>
-                <form onSubmit = {this.handleSubmit}>
+                <form onSubmit = {(event) => {
+                    if (this.handleValidation(event, 'name') && this.handleValidation(event, 'description')
+                        && this.handleValidation(event, 'price') && this.handleValidation(event, 'quantity')
+                        && this.handleValidation(event, 'sellerID')) {
+                        this.handleSubmit();
+                    }}}>
                     <label>
                         Item Name:
                         <input
@@ -110,8 +129,9 @@ class AddItem extends React.Component {
                             onChange = {(event) => this.handleChange(event, 'sellerID')}
                         />
                     </label>
-                    <input type = "submit" value = "Submit" />
+                    <input type="submit" value = "Submit" />
                 </form>
+                {this.state.submitted}
             </div>
         );
     }
