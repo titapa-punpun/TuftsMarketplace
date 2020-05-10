@@ -24,7 +24,7 @@ def submitUser():
     username = content.get('username') # extracts only username, which is stored as value
     print(username)
     cursor.execute("SELECT * FROM table_1 WHERE name='" + username + "';")
-    if cursor.rowcount != 0:
+    if cursor.rowcount != 0: # if user already exists, i.e. there's a row with that user
         abort(406)
         return 406
     cursor.execute("INSERT INTO table_1 (name) VALUES ('" + username + "');")
@@ -37,23 +37,9 @@ def verifyUser():
     username = content.get('username') # extracts only username from frontend, which is stored as value
     print(username)
     cursor.execute("SELECT * FROM table_1 WHERE name='" + username + "';")
-    if cursor.rowcount != 1:
+    if cursor.rowcount != 1: # if user doesn't exist, i.e. there's not exactly 1 row for that user
         abort(401)
         return 401
-    return {'success': True}
-
-@app.route('/addItem', methods=['POST'])
-def addItem():
-    content = request.json
-    itemName = "'" + (content.get('item')).get('name') + "',"
-    print(itemName)
-    description = "'" + (content.get('item')).get('description') + "',"
-    price = "'" + (content.get('item')).get('price') + "',"
-    quantity = "'" + (content.get('item')).get('quantity') + "'"
-    sellerID = "'" + (content.get('item')).get('sellerID') + "',"
-    cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quantity) "
-                   "VALUES (" + itemName + description + price + sellerID + quantity + ")")
-    connection.commit()
     return {'success': True}
 
 @app.route('/getAllItems', methods=['GET'])
@@ -82,17 +68,57 @@ def getAllItems():
     # connection.commit()
     return dictItems
 
+@app.route('/addItem', methods=['POST'])
+def addItem():
+    content = request.json
+    # extracting information from 'item' dictionary, which has 'name', 'description', etc. as keys and returns values
+    # of those keys.
+    itemName = "'" + (content.get('item')).get('name') + "',"
+    description = "'" + (content.get('item')).get('description') + "',"
+    price = "'" + (content.get('item')).get('price') + "',"
+    quantity = "'" + (content.get('item')).get('quantity') + "'"
+    sellerID = "'" + (content.get('item')).get('sellerID') + "',"
+    cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quantity) "
+                   "VALUES (" + itemName + description + price + sellerID + quantity + ")")
+    connection.commit()
+    return {'success': True}
 
-# @app.route('/buyItem', methods=['POST'])
-# def buyItem():
-#     content = request.json
-#     itemName = "'" + content.get('itemName') + "',"
-#     quantity = "'" + content.get('quantity') + "'"
-#     cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quatity) "
-#                    "VALUES (" + itemName + description + price + sellerID + quantity + ")")
-#     connection.commit()
-#     return {'success': True}
+@app.route('/addBid', methods=['POST'])
+def buyItem():
+    content = request.json
 
+    # extracting information from 'item' dictionary
+    quantity = "'" + (content.get('item')).get('quantity') + "'"
+    bidderID = "'" + (content.get('item')).get('bidderID') + "',"
+    bidPrice = "'" + (content.get('item')).get('bidPrice') + "',"
+    itemID = (content.get('item')).get('itemID')
+
+    # get to and retrieve quantity of that item from db to check quantity available
+    cursor.execute("SELECT quantity FROM items WHERE id='" + itemID + "';")
+    quantAvailable = int(cursor.fetchall()[0][0])
+    print(quantAvailable)
+
+    itemID = "'" + itemID + "'"
+
+    print(quantity, bidderID, bidPrice, itemID)
+
+    if int((content.get('item')).get('quantity')) <= quantAvailable:
+        cursor.execute("INSERT INTO bids (item_id, bidder_id, bid_price, quantity) " +
+                       "VALUES (" + itemID + bidderID + bidPrice + quantity + ");")
+
+
+
+
+
+    connection.commit()
+    return {'success': True}
+
+    # if quantToBuy < quantExists --> do math
+
+    # if quantToBuy > quantExists --> error
+
+    # delete from 'items' table
+    # cursor.execute("DELETE FROM items WHERE id='" + itemID + "';")
 
 
 
