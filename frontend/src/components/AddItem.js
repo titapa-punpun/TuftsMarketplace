@@ -1,9 +1,9 @@
-// make the endpoint in the backend and decide what info you want from the frontend -- DONE
-// test the endpoint using postman -- DONE
+// make the endpoint in the backend and decide what info you want from the frontend
+// test the endpoint using postman
 // make a route to the new page -- DONE
-// make a link (from home page) to the new page (from the package called react router dom) -- DONE
-// make empty form (itemName, description, price, quantity) -- DONE
-// write handlechange -- DONE
+// make a link (from home page) to the new page (from the package called react router dom)
+// make empty form (itemName, description, price, quantity)
+// write handlechange
 // write handlesubmit
 
 import React from 'react';
@@ -68,8 +68,6 @@ class AddItem extends React.Component {
         console.log('in handleValidation')
         let item = this.state.item;
         let formIsValid = true;
-
-        console.log('item: ', item[field]);
 
         if (!item[field]) {
             formIsValid = false;

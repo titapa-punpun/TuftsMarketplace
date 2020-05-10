@@ -33,7 +33,7 @@ export default function App() {
                         {loggedIn ? <Home/> : <Redirect to="/login" />}
                     </Route>
                     <Route exact path="/addItem">
-                        {loggedIn ? <AddItem/> : <Redirect to="/login" />}
+                        <AddItem/>
                     </Route>
                     <Route exact path="/">
                         {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
