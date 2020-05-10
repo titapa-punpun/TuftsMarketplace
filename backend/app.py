@@ -94,7 +94,7 @@ def buyItem():
     itemID = (content.get('item')).get('itemID')
 
     # get to and retrieve quantity of that item from db to check quantity available
-    cursor.execute("SELECT quantity FROM items WHERE id='" + itemID + "';")
+    cursor.execute("SELECT quantity FROM items WHERE id=" + itemID + ";")
     quantAvailable = int(cursor.fetchall()[0][0])
     print(quantAvailable)
 
@@ -103,12 +103,10 @@ def buyItem():
     print(quantity, bidderID, bidPrice, itemID)
 
     if int((content.get('item')).get('quantity')) <= quantAvailable:
-        cursor.execute("INSERT INTO bids (item_id, bidder_id, bid_price, quantity) " +
-                       "VALUES (" + itemID + bidderID + bidPrice + quantity + ");")
-
-
-
-
+        cursor.execute("INSERT INTO bids (item_id, bidder_id, bid_price, quantity) "
+                       "VALUES (" + itemID + bidderID + bidPrice + quantity + ")")
+        # cursor.execute("INSERT INTO bids (item_id, bidder_id, bid_price, quantity) " +
+        #                "VALUES (" + itemID + bidderID + bidPrice + quantity + ")")
 
     connection.commit()
     return {'success': True}
