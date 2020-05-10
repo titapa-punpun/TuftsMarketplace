@@ -71,8 +71,7 @@ def getAllItems():
 @app.route('/addItem', methods=['POST'])
 def addItem():
     content = request.json
-    # extracting information from 'item' dictionary, which has 'name', 'description', etc. as keys and returns values
-    # of those keys.
+    # extracting info from frontend, which has 'name', 'description', etc. as keys and returns values of those keys.
     itemName = "'" + (content.get('item')).get('name') + "',"
     description = "'" + (content.get('item')).get('description') + "',"
     price = "'" + (content.get('item')).get('price') + "',"
@@ -87,7 +86,7 @@ def addItem():
 def buyItem():
     content = request.json
 
-    # extracting information from 'item' dictionary
+    # extracting info from frontend
     quantity = "'" + (content.get('item')).get('quantity') + "'"
     bidderID = "'" + (content.get('item')).get('bidderID') + "',"
     bidPrice = "'" + (content.get('item')).get('bidPrice') + "',"
@@ -102,11 +101,17 @@ def buyItem():
 
     print(quantity, bidderID, bidPrice, itemID)
 
-    if int((content.get('item')).get('quantity')) <= quantAvailable:
-        cursor.execute("INSERT INTO bids (item_id, bidder_id, bid_price, quantity) "
-                       "VALUES (" + itemID + bidderID + bidPrice + quantity + ")")
-        # cursor.execute("INSERT INTO bids (item_id, bidder_id, bid_price, quantity) " +
-        #                "VALUES (" + itemID + bidderID + bidPrice + quantity + ")")
+    quant = int((content.get('item')).get('quantity'))
+
+    if quant > 0 and quant <= quantAvailable:
+        cursor.execute("INSERT INTO \"bids\"(\"item_id\", \"bidder_id\", \"bid_price\", \"quantity\") "
+                       "VALUES(" + {}.format(itemID, bidderID, bidPrice, quantity) + ");")
+
+        # cursor.execute("INSERT INTO \"bids\"(\"item_id\", \"bidder_id\", \"bid_price\", \"quantity\") "
+        #                "VALUES(" + {}.format(itemID) + {}.format(bidderID) + {}.format(bidPrice) + {}.format(quantity) + ");")
+
+    # elif quant > quantAvailable:
+    #     print("Not enough of the item available.")
 
     connection.commit()
     return {'success': True}
