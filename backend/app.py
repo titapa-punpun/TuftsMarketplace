@@ -23,11 +23,11 @@ def submitUser():
     content = request.json # extracts things from json request
     username = content.get('username') # extracts only username, which is stored as value
     print(username)
-    cursor.execute("SELECT * FROM table_1 WHERE name='" + username + "';")
+    cursor.execute("SELECT * FROM users WHERE name='" + username + "';")
     if cursor.rowcount != 0: # if user already exists, i.e. there's a row with that user
         abort(406)
         return 406
-    cursor.execute("INSERT INTO table_1 (name) VALUES ('" + username + "');")
+    cursor.execute("INSERT INTO users (name) VALUES ('" + username + "');")
     connection.commit()
     return {'success': True}
 
@@ -36,7 +36,7 @@ def verifyUser():
     content = request.json # extracts things from json request ('body' in frontend)
     username = content.get('username') # extracts only username from frontend, which is stored as value
     print(username)
-    cursor.execute("SELECT * FROM table_1 WHERE name='" + username + "';")
+    cursor.execute("SELECT * FROM users WHERE name='" + username + "';")
     if cursor.rowcount != 1: # if user doesn't exist, i.e. there's not exactly 1 row for that user
         abort(401)
         return 401
@@ -83,7 +83,7 @@ def addItem():
     return {'success': True}
 
 @app.route('/addBid', methods=['POST'])
-def buyItem():
+def addBid():
     content = request.json
 
     # extracting info from frontend
@@ -103,24 +103,19 @@ def buyItem():
 
     quant = int((content.get('item')).get('quantity'))
 
-    if quant > 0 and quant <= quantAvailable:
+    if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
         cursor.execute("INSERT INTO \"bids\"(\"item_id\", \"bidder_id\", \"bid_price\", \"quantity\") "
                        "VALUES(" + {}.format(itemID, bidderID, bidPrice, quantity) + ");")
 
         # cursor.execute("INSERT INTO \"bids\"(\"item_id\", \"bidder_id\", \"bid_price\", \"quantity\") "
         #                "VALUES(" + {}.format(itemID) + {}.format(bidderID) + {}.format(bidPrice) + {}.format(quantity) + ");")
 
-    # elif quant > quantAvailable:
-    #     print("Not enough of the item available.")
+    elif quant > quantAvailable:
+        print("The quantity you requested is more than the amount the seller is selling.")
 
     connection.commit()
     return {'success': True}
 
-    # if quantToBuy < quantExists --> do math
-
-    # if quantToBuy > quantExists --> error
-
-    # delete from 'items' table
     # cursor.execute("DELETE FROM items WHERE id='" + itemID + "';")
 
 

@@ -12,7 +12,7 @@ class Home extends React.Component {
     componentDidMount() {
         fetch('http://127.0.0.1:5000/getAllItems',
             {method: 'GET'})
-            // => separates parameter from body of lamda function. LHS is param, RHS is the body of func.
+            // => separates parameter from body of lambda function. LHS is param, RHS is the body of func.
             .then(response => response.json())
             .then(response => {this.setState({items: response.allItems})})
     }

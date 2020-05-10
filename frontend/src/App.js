@@ -10,7 +10,7 @@ import CreateUser from './components/CreateUser'
 import Login from './components/Login'
 import Home from './components/Home'
 import AddItem from './components/AddItem'
-import SearchItem from './components/SearchItem'
+import AddBid from './components/AddBid'
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -34,6 +34,9 @@ export default function App() {
                     </Route>
                     <Route exact path="/addItem">
                         <AddItem/>
+                    </Route>
+                    <Route exact path="/addBid">
+                        <AddBid/>
                     </Route>
                     <Route exact path="/">
                         {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}

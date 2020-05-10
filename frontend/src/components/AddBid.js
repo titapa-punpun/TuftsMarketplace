@@ -1,6 +1,6 @@
 // make the endpoint in the backend and decide what info you want from the frontend
 // test the endpoint using postman
-// make a route to the new page -- DONE
+// make a route to the new page
 // make a link (from home page) to the new page (from the package called react router dom)
 // make empty form (itemName, description, price, quantity)
 // write handlechange
@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-class AddItem extends React.Component {
+class AddBid extends React.Component {
     constructor(props) {
         super(props);
         /* Initializing object properties */
@@ -135,4 +135,4 @@ class AddItem extends React.Component {
     }
 }
 
-export default AddItem;
+export default AddBid;
