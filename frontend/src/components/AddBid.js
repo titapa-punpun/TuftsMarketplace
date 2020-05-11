@@ -1,6 +1,6 @@
 // make the endpoint in the backend and decide what info you want from the frontend
 // test the endpoint using postman
-// make a route to the new page
+// make a route to the new page -- DONE
 // make a link (from home page) to the new page (from the package called react router dom)
 // make empty form (itemName, description, price, quantity)
 // write handlechange

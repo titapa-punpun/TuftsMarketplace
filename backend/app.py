@@ -46,6 +46,7 @@ def verifyUser():
 def getAllItems():
     content = request.json
     cursor.execute("SELECT * FROM items")
+    # retrieve every row in 'items' table 
     rows = cursor.fetchall()
     print("Rows: ", rows)
     listOfDicts = []

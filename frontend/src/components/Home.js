@@ -30,11 +30,12 @@ class Home extends React.Component {
         const allItems = this.state.items;
         return (
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                {allItems.map(item => (<div key={item.itemID}> Item: {item.itemName} <br/>
+                {allItems.map(item => (<div key={item.itemID}> Item: {item.itemName}
+                                       <Link to={"/addBid"}><button type={"button"}>Buy</button></Link> <br/>
                                        Description: {item.itemDescription} <br/>
                                        Price: ${item.itemPrice} <br/>
-                                       Quantity: {item.itemQuantity} <br/> </div>))}
-                <br/>
+                                       Quantity: {item.itemQuantity} <br/> <br/> </div>))}
+                <br />
                 <p>If you want to add item(s) to sell:</p>
                 <ul>
                     <Link to="/addItem">Add Items</Link>
