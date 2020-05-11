@@ -93,7 +93,7 @@ class AddItem extends React.Component {
                             type = "text"
                             name = {item.name}
                             onChange = {(event) => this.handleChange(event, 'name')}
-                        />
+                        /><br/>
                     </label>
                     <label>
                         Item Description:
@@ -101,7 +101,7 @@ class AddItem extends React.Component {
                             type = "text"
                             description = {this.state.item.description}
                             onChange = {(event) => this.handleChange(event, 'description')}
-                        />
+                        /><br/>
                     </label>
                     <label>
                         Item Price:
@@ -109,7 +109,7 @@ class AddItem extends React.Component {
                             type = "text"
                             price = {this.state.item.price}
                             onChange = {(event) => this.handleChange(event, 'price')}
-                        />
+                        /><br/>
                     </label>
                     <label>
                         Quantity of Item:
@@ -117,7 +117,7 @@ class AddItem extends React.Component {
                             type = "text"
                             quantity = {this.state.item.quantity}
                             onChange = {(event) => this.handleChange(event, 'quantity')}
-                        />
+                        /><br/>
                     </label>
                     <label>
                         Seller ID:
@@ -125,7 +125,7 @@ class AddItem extends React.Component {
                             type = "text"
                             quantity = {this.state.item.sellerID}
                             onChange = {(event) => this.handleChange(event, 'sellerID')}
-                        />
+                        /><br/>
                     </label>
                     <input type="submit" value = "Submit" />
                 </form>

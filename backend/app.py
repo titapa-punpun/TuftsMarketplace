@@ -46,7 +46,7 @@ def verifyUser():
 def getAllItems():
     content = request.json
     cursor.execute("SELECT * FROM items")
-    # retrieve every row in 'items' table 
+    # retrieve every row in 'items' table
     rows = cursor.fetchall()
     print("Rows: ", rows)
     listOfDicts = []
@@ -89,8 +89,8 @@ def addBid():
 
     # extracting info from frontend
     quantity = "'" + (content.get('item')).get('quantity') + "'"
-    bidderID = "'" + (content.get('item')).get('bidderID') + "',"
-    bidPrice = "'" + (content.get('item')).get('bidPrice') + "',"
+    bidderID = "'" + (content.get('item')).get('bidderID') + "'"
+    bidPrice = "'" + (content.get('item')).get('bidPrice') + "'"
     itemID = (content.get('item')).get('itemID')
 
     # get to and retrieve quantity of that item from db to check quantity available
@@ -105,11 +105,8 @@ def addBid():
     quant = int((content.get('item')).get('quantity'))
 
     if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
-        cursor.execute("INSERT INTO \"bids\"(\"item_id\", \"bidder_id\", \"bid_price\", \"quantity\") "
-                       "VALUES(" + {}.format(itemID, bidderID, bidPrice, quantity) + ");")
-
-        # cursor.execute("INSERT INTO \"bids\"(\"item_id\", \"bidder_id\", \"bid_price\", \"quantity\") "
-        #                "VALUES(" + {}.format(itemID) + {}.format(bidderID) + {}.format(bidPrice) + {}.format(quantity) + ");")
+        cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity") '
+                       'VALUES({}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity))
 
     elif quant > quantAvailable:
         print("The quantity you requested is more than the amount the seller is selling.")

@@ -1,9 +1,9 @@
 // make the endpoint in the backend and decide what info you want from the frontend
 // test the endpoint using postman
 // make a route to the new page -- DONE
-// make a link (from home page) to the new page (from the package called react router dom)
-// make empty form (itemName, description, price, quantity)
-// write handlechange
+// make a link (from home page) to the new page (from the package called react router dom) -- DONE
+// make empty form (bid price, quantity) -- DONE
+// write handlechange -- DONE
 // write handlesubmit
 
 import React from 'react';
@@ -12,14 +12,11 @@ class AddBid extends React.Component {
     constructor(props) {
         super(props);
         /* Initializing object properties */
-        var item = {
-            name: '',
-            description: '',
-            price: '',
+        var bidInfo = {
+            bidPrice: '',
             quantity: '',
-            sellerID: '',
         };
-        this.state = {item: item, submitted: false};
+        this.state = {bidInfo: bidInfo, submitted: false};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,11 +24,11 @@ class AddBid extends React.Component {
 
     /* defining handleChange function */
     handleChange(event, field) {
-        const {item} = this.state // extracting item from state
-        item[field] = event.target.value
+        const {bidInfo} = this.state // extracting bidInfo from state
+        bidInfo[field] = event.target.value
         // gets value that user types in
         this.setState({
-            item: item
+            bidInfo: bidInfo
         })
     }
 
@@ -39,7 +36,7 @@ class AddBid extends React.Component {
     handleSubmit(event) {
         /* Here, call backend and give it item info. */
         const body = {
-            item: this.state.item,
+            bidInfo: this.state.bidInfo,
         };
         fetch('http://127.0.0.1:5000/addItem',
             {method: 'POST',
@@ -66,10 +63,10 @@ class AddBid extends React.Component {
     // checks that all fields have been filled
     handleValidation(event, field) {
         console.log('in handleValidation')
-        let item = this.state.item;
+        let bidInfo = this.state.bidInfo;
         let formIsValid = true;
 
-        if (!item[field]) {
+        if (!bidInfo[field]) {
             formIsValid = false;
             this.setState({submitted: 'Field(s) cannot be left blank.'})
             console.log('Form empty')
@@ -78,55 +75,29 @@ class AddBid extends React.Component {
     }
 
     render() {
-        const {item} = this.state
+        const {bidInfo} = this.state
         return (
             <div>
                 <form onSubmit = {(event) => {
-                    if (this.handleValidation(event, 'name') && this.handleValidation(event, 'description')
-                        && this.handleValidation(event, 'price') && this.handleValidation(event, 'quantity')
-                        && this.handleValidation(event, 'sellerID')) {
+                    if (this.handleValidation(event, 'bidPrice') && this.handleValidation(event, 'quantity')) {
                         this.handleSubmit();
                     }}}>
                     <label>
-                        Item Name:
+                        Bid Price (per 1 count):
                         <input
                             type = "text"
-                            name = {item.name}
-                            onChange = {(event) => this.handleChange(event, 'name')}
-                        />
+                            bidPrice = {bidInfo.bidPrice}
+                            onChange = {(event) => this.handleChange(event, 'bidPrice')}
+                        /><br/>
                     </label>
                     <label>
-                        Item Description:
+                        Quantity:
                         <input
                             type = "text"
-                            description = {this.state.item.description}
-                            onChange = {(event) => this.handleChange(event, 'description')}
-                        />
-                    </label>
-                    <label>
-                        Item Price:
-                        <input
-                            type = "text"
-                            price = {this.state.item.price}
-                            onChange = {(event) => this.handleChange(event, 'price')}
-                        />
-                    </label>
-                    <label>
-                        Quantity of Item:
-                        <input
-                            type = "text"
-                            quantity = {this.state.item.quantity}
+                            quantity = {this.state.bidInfo.quantity}
                             onChange = {(event) => this.handleChange(event, 'quantity')}
                         />
-                    </label>
-                    <label>
-                        Seller ID:
-                        <input
-                            type = "text"
-                            quantity = {this.state.item.sellerID}
-                            onChange = {(event) => this.handleChange(event, 'sellerID')}
-                        />
-                    </label>
+                    </label><br/>
                     <input type="submit" value = "Submit" />
                 </form>
                 {this.state.submitted}
