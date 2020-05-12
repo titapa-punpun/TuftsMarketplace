@@ -18,7 +18,7 @@ class AddBid extends React.Component {
             bidPrice: '',
             quantity: '',
             bidderID: '',
-            itemID: props.match.params.id,
+            itemID: props.match.params.itemID,
         };
         this.state = {bidInfo: bidInfo, submitted: false};
 

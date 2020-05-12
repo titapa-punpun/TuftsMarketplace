@@ -35,7 +35,7 @@ export default function App() {
                     <Route exact path="/addItem">
                         <AddItem/>
                     </Route>
-                    <Route exact path="/addBid/:id" component={AddBid}>
+                    <Route exact path="/addBid/:itemID" component={AddBid}>
                     </Route>
                     <Route exact path="/">
                         {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
