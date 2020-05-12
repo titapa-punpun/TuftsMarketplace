@@ -74,6 +74,7 @@ class AddItem extends React.Component {
             this.setState({submitted: 'Field(s) cannot be left blank.'})
             console.log('Form empty')
         }
+        event.preventDefault();
         return formIsValid;
     }
 
@@ -85,7 +86,7 @@ class AddItem extends React.Component {
                     if (this.handleValidation(event, 'name') && this.handleValidation(event, 'description')
                         && this.handleValidation(event, 'price') && this.handleValidation(event, 'quantity')
                         && this.handleValidation(event, 'sellerID')) {
-                        this.handleSubmit();
+                        this.handleSubmit(event);
                     }}}>
                     <label>
                         Item Name:

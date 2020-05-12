@@ -14,6 +14,8 @@ import AddBid from './components/AddBid'
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [userID, setUserID] = useState(0); // hook for global access to userID using setUserID function
+    console.log(userID);
     return (
         <Router>
             <div>
@@ -27,7 +29,7 @@ export default function App() {
                         <Users/>
                     </Route>
                     <Route exact path="/login">
-                        <Login setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>
+                        <Login setLoggedIn={setLoggedIn} loggedIn={loggedIn} setUserID={setUserID}/>
                     </Route>
                     <Route exact path="/home">
                         {loggedIn ? <Home/> : <Redirect to="/login" />}
@@ -35,7 +37,7 @@ export default function App() {
                     <Route exact path="/addItem">
                         <AddItem/>
                     </Route>
-                    <Route exact path="/addBid/:itemID" component={AddBid}>
+                    <Route exact path="/addBid/:itemID" render={(props) => <AddBid {...props} userID={userID}/>}>
                     </Route>
                     <Route exact path="/">
                         {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}

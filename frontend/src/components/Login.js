@@ -21,7 +21,7 @@ class Login extends React.Component {
 
     /* defining handleSubmit function */
     handleSubmit(event) {
-        const {setLoggedIn} = this.props; // extraction
+        const {setLoggedIn, setUserID} = this.props; // extraction
         this.setState({value: ''});
         const body = {
             username: this.state.value,
@@ -32,14 +32,16 @@ class Login extends React.Component {
                 headers: {
                     'Content-Type': 'application/json'
                 }})
-            .then(response => response.status)
-            .then(status => {
-                if (status !== 200){
+            .then(response => {
+                if (response.status !== 200) {
                     console.log('user doesnt exist')
                 } else {
-                    setLoggedIn(true);
-                    console.log('user exists')
+                    return response;
                 }
+            }).then(response => response.json())
+            .then(json => {
+                setLoggedIn(true);
+                setUserID(json.userID);
             }).catch(x => {
             console.log('no data', x)
             return('no data')

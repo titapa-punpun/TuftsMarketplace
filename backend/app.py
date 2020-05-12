@@ -40,7 +40,10 @@ def verifyUser():
     if cursor.rowcount != 1: # if user doesn't exist, i.e. there's not exactly 1 row for that user
         abort(401)
         return 401
-    return {'success': True}
+
+    userID = cursor.fetchone()[0] # fetch user id
+
+    return {'success': True, 'userID': userID}
 
 @app.route('/getAllItems', methods=['GET'])
 def getAllItems():
@@ -48,7 +51,7 @@ def getAllItems():
     cursor.execute("SELECT * FROM items")
     # retrieve every row in 'items' table
     rows = cursor.fetchall()
-    print("Rows: ", rows)
+    # print("Rows: ", rows)
     listOfDicts = []
     for row in rows:
         itemDict = dict()
@@ -66,7 +69,6 @@ def getAllItems():
     dictItems = dict()
     dictItems['allItems'] = listOfDicts
 
-    # connection.commit()
     return dictItems
 
 @app.route('/addItem', methods=['POST'])
@@ -88,10 +90,10 @@ def addBid():
     content = request.json
 
     # extracting info from frontend
-    quantity = "'" + (content.get('item')).get('quantity') + "'"
-    bidderID = "'" + (content.get('item')).get('bidderID') + "'"
-    bidPrice = "'" + (content.get('item')).get('bidPrice') + "'"
-    itemID = (content.get('item')).get('itemID')
+    quantity = "'" + (content.get('bidInfo')).get('quantity') + "'"
+    bidderID = "'" + str(content.get('bidderID')) + "'"
+    bidPrice = "'" + (content.get('bidInfo')).get('bidPrice') + "'"
+    itemID = (content.get('bidInfo')).get('itemID')
 
     # get to and retrieve quantity of that item from db to check quantity available
     cursor.execute("SELECT quantity FROM items WHERE id=" + itemID + ";")
@@ -102,12 +104,11 @@ def addBid():
 
     print(quantity, bidderID, bidPrice, itemID)
 
-    quant = int((content.get('item')).get('quantity'))
+    quant = int((content.get('bidInfo')).get('quantity'))
 
     if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
         cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity") '
                        'VALUES({}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity))
-
     elif quant > quantAvailable:
         print("The quantity you requested is more than the amount the seller is selling.")
 
@@ -116,6 +117,14 @@ def addBid():
 
     # cursor.execute("DELETE FROM items WHERE id='" + itemID + "';")
 
+# @app.route('/getUserID', methods=['GET'])
+# def getUserID():
+#     content = request.json
+#     username = content.get('username')
+#     cursor.execute("SELECT id FROM users WHERE name=" + username + ";")
+#
+#
+#     return
 
 
 if __name__ == '__main__':
