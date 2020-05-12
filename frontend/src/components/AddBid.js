@@ -7,6 +7,8 @@
 // write handlesubmit
 
 import React from 'react';
+import Home from './Home'
+
 
 class AddBid extends React.Component {
     constructor(props) {
@@ -15,6 +17,8 @@ class AddBid extends React.Component {
         var bidInfo = {
             bidPrice: '',
             quantity: '',
+            bidderID: '',
+            itemID: props.match.params.id,
         };
         this.state = {bidInfo: bidInfo, submitted: false};
 
@@ -26,7 +30,6 @@ class AddBid extends React.Component {
     handleChange(event, field) {
         const {bidInfo} = this.state // extracting bidInfo from state
         bidInfo[field] = event.target.value
-        // gets value that user types in
         this.setState({
             bidInfo: bidInfo
         })
@@ -38,7 +41,7 @@ class AddBid extends React.Component {
         const body = {
             bidInfo: this.state.bidInfo,
         };
-        fetch('http://127.0.0.1:5000/addItem',
+        fetch('http://127.0.0.1:5000/addBid',
             {method: 'POST',
                 body: JSON.stringify(body),
                 headers: {
@@ -47,10 +50,10 @@ class AddBid extends React.Component {
             .then(response => response.status)
             .then(status => {
                 if (status != 200){
-                    this.setState({submitted: 'Item submission failed.'})
+                    this.setState({submitted: 'Bid submission failed.'})
                     console.log('big bad')
                 } else {
-                    this.setState({submitted: 'Item successfully submitted!'})
+                    this.setState({submitted: 'Bid successfully submitted!'})
                     console.log('success')
                 }
             }).catch(x => {
@@ -76,6 +79,8 @@ class AddBid extends React.Component {
 
     render() {
         const {bidInfo} = this.state
+        console.log(this.props)
+        console.log(bidInfo)
         return (
             <div>
                 <form onSubmit = {(event) => {
