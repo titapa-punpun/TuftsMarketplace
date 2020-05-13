@@ -31,7 +31,7 @@ class Home extends React.Component {
         return (
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
                 {allItems.map(item => (<div key={item.itemID}> Item: {item.itemName}
-                                       <Link to={"/addBid/" + item.itemID}><button type={"button"}>Buy</button></Link> <br/>
+                                       <Link to={"/addBid/" + item.itemID + "/" + item.itemQuantity}><button type={"button"}>Buy</button></Link> <br/>
                                        Description: {item.itemDescription} <br/>
                                        Price: ${item.itemPrice} <br/>
                                        Quantity: {item.itemQuantity} <br/> <br/> </div>))}

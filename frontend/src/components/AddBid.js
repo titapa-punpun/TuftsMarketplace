@@ -7,8 +7,6 @@
 // write handlesubmit
 
 import React from 'react';
-import Home from './Home'
-
 
 class AddBid extends React.Component {
     constructor(props) {
@@ -19,7 +17,8 @@ class AddBid extends React.Component {
             quantity: '',
             itemID: props.match.params.itemID,
         };
-        this.state = {bidInfo: bidInfo, submitted: false};
+        this.state = {bidInfo: bidInfo, submitted: false, quantAvail: props.match.params.quantAvail};
+        console.log(this.state.quantAvail);
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -67,12 +66,18 @@ class AddBid extends React.Component {
     handleValidation(event, field) {
         console.log('in handleValidation')
         let bidInfo = this.state.bidInfo;
+        let bidQuant = parseInt(bidInfo.quantity);
+        let quantAvail = parseInt(this.state.quantAvail);
         let formIsValid = true;
 
         if (!bidInfo[field]) {
             formIsValid = false;
             this.setState({submitted: 'Field(s) cannot be left blank.'})
             console.log('Form empty')
+        } else if (bidQuant <= 0 || bidQuant > quantAvail) {
+            formIsValid = false;
+            console.log('Quant submitted is invalid.');
+            this.setState({submitted: 'The quantity you submitted is invalid.'})
         }
         event.preventDefault();
         return formIsValid;
