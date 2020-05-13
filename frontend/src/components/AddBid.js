@@ -92,6 +92,7 @@ class AddBid extends React.Component {
                 <form onSubmit={(event) => {
                     if (this.handleValidation(event, 'bidPrice') && this.handleValidation(event, 'quantity')) {
                         this.handleSubmit(event);
+                        this.props.history.goBack();
                     }}}>
                     <label>
                         Bid Price (per 1 count):

@@ -87,6 +87,7 @@ class AddItem extends React.Component {
                         && this.handleValidation(event, 'price') && this.handleValidation(event, 'quantity')
                         && this.handleValidation(event, 'sellerID')) {
                         this.handleSubmit(event);
+                        this.props.history.goBack();
                     }}}>
                     <label>
                         Item Name:
