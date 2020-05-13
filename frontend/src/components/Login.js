@@ -8,7 +8,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         /* Initializing 2 vars */
-        this.state = {value: ''};
+        this.state = {value: '', errorMessage: ''};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,6 +34,7 @@ class Login extends React.Component {
                 }})
             .then(response => {
                 if (response.status !== 200) {
+                    this.setState({errorMessage: 'Your username does not exist. Please create a new user or try again.'})
                     console.log('user doesnt exist')
                 } else {
                     return response;
@@ -61,7 +62,7 @@ class Login extends React.Component {
                         </label>
                         <input type = "submit" value = "Submit" />
                     </form>
-                    Your username doesn't exist. Please create a new user.
+                    {this.state.errorMessage}
                 </div>
             );
         else
