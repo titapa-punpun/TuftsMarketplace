@@ -15,7 +15,7 @@ import AddBid from './components/AddBid'
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [userID, setUserID] = useState(0); // hook for global access to userID using setUserID function
-    console.log(userID);
+    console.log('user id: ', userID);
     return (
         <Router>
             <div>

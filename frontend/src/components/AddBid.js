@@ -22,7 +22,7 @@ class AddBid extends React.Component {
             itemID: props.match.params.itemID,
             quantAvail: props.match.params.quantAvail
         };
-        console.log(this.state.quantAvail);
+        console.log('quant available: ', this.state.quantAvail);
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);

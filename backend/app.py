@@ -109,7 +109,7 @@ def addBid():
     if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
         cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity") '
                        'VALUES({}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity))
-        def addNotification(bidQuant, bidderID, bidPrice):
+        def addNotification(bidQuant, bidderID, bidPrice, itemID):
             print('bid quant: ', bidQuant)
             print('sender id: ', bidderID)
 
@@ -130,10 +130,11 @@ def addBid():
             sent = "'" + 'sent' + "'"
             receiverID = "'" + sellerID + "',"
             senderID = "" + bidderID + ","
+            itemID = "" + itemID + ","
 
-            cursor.execute("INSERT INTO notifications (notification_type, receiver_id, sender_id, message, status) "
-                           "VALUES (" + bidRequest + receiverID + senderID + notiMessage + sent + ")")
-        addNotification(quant, bidderID, bidPrice)
+            cursor.execute("INSERT INTO notifications (notification_type, receiver_id, sender_id, item_id, message, status) "
+                           "VALUES (" + bidRequest + receiverID + senderID + itemID + notiMessage + sent + ")")
+        addNotification(quant, bidderID, bidPrice, itemID)
 
     elif quant > quantAvailable:
         print("The quantity you requested is more than the amount the seller is selling.")
