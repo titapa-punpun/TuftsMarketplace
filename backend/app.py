@@ -31,6 +31,7 @@ def submitUser():
     connection.commit()
     return {'success': True}
 
+# verifies user and sends userID to the frontend
 @app.route('/verifyUser', methods=['POST'])
 def verifyUser():
     content = request.json # extracts things from json request ('body' in frontend)
@@ -64,7 +65,7 @@ def getAllItems():
         itemDict['itemQuantity'] = row[6]
         listOfDicts.append(itemDict)
 
-    print(listOfDicts)
+    # print(listOfDicts)
 
     dictItems = dict()
     dictItems['allItems'] = listOfDicts
@@ -93,12 +94,11 @@ def addBid():
     quantity = "'" + (content.get('bidInfo')).get('quantity') + "'"
     bidderID = "'" + str(content.get('bidderID')) + "'"
     bidPrice = "'" + (content.get('bidInfo')).get('bidPrice') + "'"
-    itemID = (content.get('bidInfo')).get('itemID')
+    itemID = (content.get('itemID'))
 
     # get to and retrieve quantity of that item from db to check quantity available
     cursor.execute("SELECT quantity FROM items WHERE id=" + itemID + ";")
     quantAvailable = int(cursor.fetchall()[0][0])
-    print(quantAvailable)
 
     itemID = "'" + itemID + "'"
 
@@ -109,6 +109,32 @@ def addBid():
     if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
         cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity") '
                        'VALUES({}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity))
+        def addNotification(bidQuant, bidderID, bidPrice):
+            print('bid quant: ', bidQuant)
+            print('sender id: ', bidderID)
+
+            # get to and retrieve info of that item from 'items' table
+            cursor.execute("SELECT * FROM items WHERE id=" + itemID + ";")
+            fetchResult = cursor.fetchone()
+
+            # fetching specific info of the item
+            itemName = fetchResult[1]
+            print('item name: ', itemName)
+            priceListed = fetchResult[3]
+            print('price listed: ', priceListed)
+            sellerID = fetchResult[4]
+            print('receiver id: ', sellerID)
+
+            notiMessage = "'" + 'This is a notification message.' + "',"
+            bidRequest = "'" + 'bid request' + "',"
+            sent = "'" + 'sent' + "'"
+            receiverID = "'" + sellerID + "',"
+            senderID = "" + bidderID + ","
+
+            cursor.execute("INSERT INTO notifications (notification_type, receiver_id, sender_id, message, status) "
+                           "VALUES (" + bidRequest + receiverID + senderID + notiMessage + sent + ")")
+        addNotification(quant, bidderID, bidPrice)
+
     elif quant > quantAvailable:
         print("The quantity you requested is more than the amount the seller is selling.")
 
@@ -117,14 +143,6 @@ def addBid():
 
     # cursor.execute("DELETE FROM items WHERE id='" + itemID + "';")
 
-# @app.route('/getUserID', methods=['GET'])
-# def getUserID():
-#     content = request.json
-#     username = content.get('username')
-#     cursor.execute("SELECT id FROM users WHERE name=" + username + ";")
-#
-#
-#     return
 
 
 if __name__ == '__main__':

@@ -15,9 +15,13 @@ class AddBid extends React.Component {
         var bidInfo = {
             bidPrice: '',
             quantity: '',
-            itemID: props.match.params.itemID,
         };
-        this.state = {bidInfo: bidInfo, submitted: false, quantAvail: props.match.params.quantAvail};
+        this.state = {
+            bidInfo: bidInfo,
+            submitted: false,
+            itemID: props.match.params.itemID,
+            quantAvail: props.match.params.quantAvail
+        };
         console.log(this.state.quantAvail);
 
         this.handleChange = this.handleChange.bind(this);
@@ -38,6 +42,7 @@ class AddBid extends React.Component {
         /* Here, call backend and give it item info. */
         const body = {
             bidInfo: this.state.bidInfo,
+            itemID: this.state.itemID,
             bidderID: this.props.userID,
         };
         fetch('http://127.0.0.1:5000/addBid',
@@ -92,7 +97,7 @@ class AddBid extends React.Component {
                 <form onSubmit={(event) => {
                     if (this.handleValidation(event, 'bidPrice') && this.handleValidation(event, 'quantity')) {
                         this.handleSubmit(event);
-                        this.props.history.goBack();
+                        // this.props.history.goBack();
                     }}}>
                     <label>
                         Bid Price (per 1 count):
