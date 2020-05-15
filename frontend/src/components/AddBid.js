@@ -82,7 +82,7 @@ class AddBid extends React.Component {
         } else if (bidQuant <= 0 || bidQuant > quantAvail) {
             formIsValid = false;
             console.log('Quant submitted is invalid.');
-            this.setState({submitted: 'The quantity you submitted is invalid.'})
+            this.setState({submitted: 'The quantity you submitted is invalid. Please try again.', bidInfo: {bidPrice: '', quantity: ''}})
         }
         event.preventDefault();
         return formIsValid;
@@ -90,8 +90,8 @@ class AddBid extends React.Component {
 
     render() {
         const {bidInfo} = this.state
-        console.log(this.props)
-        console.log(bidInfo)
+        console.log('in props: ', this.props)
+        console.log('bid info: ', bidInfo)
         return (
             <div>
                 <form onSubmit={(event) => {

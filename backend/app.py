@@ -142,8 +142,32 @@ def addBid():
     connection.commit()
     return {'success': True}
 
-    # cursor.execute("DELETE FROM items WHERE id='" + itemID + "';")
+@app.route('/getNotifications', methods=['POST'])
+def getNotifications():
+    content = request.json
+    userID = "'" + str(content.get('userID')) + "'"
+    cursor.execute("SELECT * FROM notifications WHERE receiver_id=" + userID + " OR sender_id=" + userID + ";")
+    # retrieve every row in 'notifications' table that satisfies the WHERE condition above
+    rows = cursor.fetchall()
 
+    listOfDicts = []
+    for row in rows:
+        notiDict = dict()
+        notiDict['notiID'] = row[0]
+        notiDict['notiType'] = row[1]
+        notiDict['receiverID'] = row[2]
+        notiDict['senderID'] = row[3]
+        notiDict['notiMessage'] = row[4]
+        notiDict['notiStatus'] = row[5]
+        notiDict['itemID'] = row[6]
+        listOfDicts.append(notiDict)
+
+    dictNotifications = dict()
+    dictNotifications['allNotifications'] = listOfDicts
+
+    print(dictNotifications)
+
+    return dictNotifications
 
 
 if __name__ == '__main__':

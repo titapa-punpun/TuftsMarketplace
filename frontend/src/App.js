@@ -11,6 +11,7 @@ import Login from './components/Login'
 import Home from './components/Home'
 import AddItem from './components/AddItem'
 import AddBid from './components/AddBid'
+import MyAccount from './components/MyAccount'
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -37,6 +38,8 @@ export default function App() {
                     <Route exact path="/addItem" render={(props) => <AddItem {...props}/>}>
                     </Route>
                     <Route exact path="/addBid/:itemID/:quantAvail" render={(props) => <AddBid {...props} userID={userID}/>}>
+                    </Route>
+                    <Route exact path="/myAccount/:itemID" render={(props) => <MyAccount {...props} userID={userID}/>}>
                     </Route>
                     <Route exact path="/">
                         {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}

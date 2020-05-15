@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 
 class Home extends React.Component {
@@ -17,17 +18,15 @@ class Home extends React.Component {
             .then(response => {this.setState({items: response.allItems})})
     }
 
-    // render() {
-    //     const l = [1, 2, 3, 4]
-    //         return (
-    //             <div>
-    //                 {l.map(x => (<div key={x}>{x}<br/></div>))}
-    //             </div>
-    //         );
+    // logout() {
+    //     if (this.state.setLoggedIn == false)
+    //         return <Redirect to='/login'/>
     // }
 
     render() {
         const allItems = this.state.items;
+        const {setLoggedIn} = this.props;
+        console.log('setLoggedIn: ', setLoggedIn);
         return (
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
                 {allItems.map(item => (<div key={item.itemID}> Item: {item.itemName}
@@ -39,7 +38,11 @@ class Home extends React.Component {
                 <p>If you want to add item(s) to sell:</p>
                 <ul>
                     <Link to="/addItem">Add Items</Link>
-                </ul>
+                </ul> <br/> <br/>
+                <Link to={"/myAccount"}><button type={"button"}>My Account</button></Link>
+                {/*<p>Logout:</p>*/}
+                {/*<button onClick={() => setLoggedIn(false)}>Logout</button>*/}
+                {/*{this.state.logout}*/}
             </div>
         );
     }

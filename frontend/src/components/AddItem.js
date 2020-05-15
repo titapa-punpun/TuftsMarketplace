@@ -53,7 +53,10 @@ class AddItem extends React.Component {
                     this.setState({submitted: 'Item submission failed.'})
                     console.log('big bad')
                 } else {
-                    this.setState({submitted: 'Item successfully submitted!'})
+                    this.setState({
+                        submitted: 'Item successfully submitted!',
+                        item: {name: '', description: '', price: '', quantity: '', sellerID: ''}
+                    })
                     console.log('success')
                 }
             }).catch(x => {
