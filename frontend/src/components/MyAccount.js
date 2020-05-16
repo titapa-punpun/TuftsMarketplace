@@ -18,28 +18,23 @@ class MyAccount extends React.Component {
                 headers: {
                     'Content-Type': 'application/json'
                 }})
-            .then(response => response.status)
-            .then(status => {
-                if (status != 200){
-                    this.setState({submitted: 'Bid submission failed.'})
-                    console.log('big bad')
-                } else {
-                    this.setState({submitted: 'Bid successfully submitted!', bidInfo: {bidPrice: '', quantity: ''}})
-                    console.log('success')
-                }
-            }).catch(x => {
-            console.log('no data', x)
-            return('no data')
-        })
+            .then(response => response.json())
+            .then(response => {this.setState({notifications: response.allNotifications})})
     }
 
     render() {
-        const {notifications} = this.state;
+        const notifications = this.state.notifications;
+        console.log('noti: ', notifications);
         const {setUserID} = this.props;
         console.log('user id: ', setUserID);
         return (
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>
-
+            <div>
+                <h1>Your Notifications</h1>
+                <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                     {notifications.map(noti => (<div key={noti.notiID}> Notification Type: {noti.notiType} <br/>
+                                                Message: {noti.notiMessage} <br/>
+                                                Status: {noti.notiStatus} <br/> <br/> </div>))}
+                </div>
             </div>
         );
     }

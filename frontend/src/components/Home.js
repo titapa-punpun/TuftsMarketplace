@@ -24,25 +24,29 @@ class Home extends React.Component {
     // }
 
     render() {
-        const allItems = this.state.items;
+        const items = this.state.items;
         const {setLoggedIn} = this.props;
         console.log('setLoggedIn: ', setLoggedIn);
         return (
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                {allItems.map(item => (<div key={item.itemID}> Item: {item.itemName}
-                                       <Link to={"/addBid/" + item.itemID + "/" + item.itemQuantity}><button type={"button"}>Buy</button></Link> <br/>
-                                       Description: {item.itemDescription} <br/>
-                                       Price: ${item.itemPrice} <br/>
-                                       Quantity: {item.itemQuantity} <br/> <br/> </div>))}
-                <br />
-                <p>If you want to add item(s) to sell:</p>
-                <ul>
-                    <Link to="/addItem">Add Items</Link>
-                </ul> <br/> <br/>
-                <Link to={"/myAccount"}><button type={"button"}>My Account</button></Link>
+            <div>
+                <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                    {items.map(item => (<div key={item.itemID}> Item: {item.itemName}
+                                        <Link to={"/addBid/" + item.itemID + "/" + item.itemQuantity}><button type={"button"}>Buy</button></Link> <br/>
+                                        Description: {item.itemDescription} <br/>
+                                        Price: ${item.itemPrice} <br/>
+                                        Quantity: {item.itemQuantity} <br/> <br/> </div>))}
+
                 {/*<p>Logout:</p>*/}
                 {/*<button onClick={() => setLoggedIn(false)}>Logout</button>*/}
                 {/*{this.state.logout}*/}
+                </div>
+                <div>
+                    <p>If you want to add item(s) to sell:</p>
+                        <ul>
+                            <Link to="/addItem">Add Items</Link>
+                        </ul> <br/> <br/>
+                    <Link to={"/myAccount"}><button type={"button"}>My Account</button></Link>
+                </div>
             </div>
         );
     }

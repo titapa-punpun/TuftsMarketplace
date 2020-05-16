@@ -39,7 +39,7 @@ export default function App() {
                     </Route>
                     <Route exact path="/addBid/:itemID/:quantAvail" render={(props) => <AddBid {...props} userID={userID}/>}>
                     </Route>
-                    <Route exact path="/myAccount/:itemID" render={(props) => <MyAccount {...props} userID={userID}/>}>
+                    <Route exact path="/myAccount" render={(props) => <MyAccount {...props} userID={userID}/>}>
                     </Route>
                     <Route exact path="/">
                         {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
