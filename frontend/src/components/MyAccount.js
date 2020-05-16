@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 
 class MyAccount extends React.Component {
     constructor(props) {
@@ -34,7 +33,7 @@ class MyAccount extends React.Component {
                     notifications.map(noti => (<div key={noti.notiID}> Notification Type: {noti.notiType} <br/>
                     Message: {noti.notiMessage} <br/>
                     Status: {noti.notiStatus} <br/> <br/> </div>))}
- 
+
             </div>
         );
     }
