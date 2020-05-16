@@ -30,11 +30,11 @@ class MyAccount extends React.Component {
         return (
             <div>
                 <h1>Your Notifications</h1>
-                <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                     {notifications.map(noti => (<div key={noti.notiID}> Notification Type: {noti.notiType} <br/>
-                                                Message: {noti.notiMessage} <br/>
-                                                Status: {noti.notiStatus} <br/> <br/> </div>))}
-                </div>
+                {notifications.length === 0 ? <div>You currently have no notifications.</div>:
+                    notifications.map(noti => (<div key={noti.notiID}> Notification Type: {noti.notiType} <br/>
+                    Message: {noti.notiMessage} <br/>
+                    Status: {noti.notiStatus} <br/> <br/> </div>))}
+ 
             </div>
         );
     }
