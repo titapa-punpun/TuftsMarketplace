@@ -52,6 +52,7 @@ class Login extends React.Component {
     
 
     render() {
+        console.log('in login');
         if (!(this.props.loggedIn))
             return (
                 <div>

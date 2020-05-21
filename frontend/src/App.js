@@ -12,16 +12,19 @@ import Home from './components/Home'
 import AddItem from './components/AddItem'
 import AddBid from './components/AddBid'
 import MyAccount from './components/MyAccount'
+import Header from './components/Header'
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [userID, setUserID] = useState(0); // hook for global access to userID using setUserID function
     console.log('user id: ', userID);
+    console.log('loggedin: ', loggedIn);
     return (
         <Router>
-            <div>
+            <div style={{width: '100vw'}}>
                 {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
+                <Route path={['/home', '/addItem', '/myAccount']} render={(props) => <Header {...props} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>}/>
                 <Switch>
                     <Route exact path="/createUser">
                         <CreateUser/>

@@ -23,8 +23,8 @@ class Home extends React.Component {
 
     render() {
         const items = this.state.items;
-        const {setLoggedIn} = this.props;
-        console.log('setLoggedIn: ', setLoggedIn);
+        // const {setLoggedIn} = this.props;
+        // console.log('setLoggedIn: ', setLoggedIn);
         return (
             <div>
                 <div style={{display: 'flex', flexWrap: 'wrap'}}>
