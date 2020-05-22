@@ -35,7 +35,7 @@ export default function Header(props) {
                 <Tabs
                     value={value}
                     onChange={handleChange}
-                    variant="scrollable"
+                    variant="fullWidth"
                     scrollButtons="on"
                     indicatorColor="primary"
                     textColor="primary"
