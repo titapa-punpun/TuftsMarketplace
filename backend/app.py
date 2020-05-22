@@ -106,12 +106,17 @@ def addBid():
 
     quant = int((content.get('bidInfo')).get('quantity'))
 
+    # retrieve username
+    cursor.execute("SELECT name FROM users WHERE id=" + bidderID + ";")
+    bidderName = cursor.fetchone()[0]
+    print('bidder name: ', bidderName)
+
     if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
         cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity") '
                        'VALUES({}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity))
-        def addNotification(bidQuant, bidderID, bidPrice, itemID):
+        def addNotification(bidQuant, bidderIDStr, itemID):
             print('bid quant: ', bidQuant)
-            print('sender id: ', bidderID)
+            print('sender id: ', bidderIDStr)
 
             # get to and retrieve info of that item from 'items' table
             cursor.execute("SELECT * FROM items WHERE id=" + itemID + ";")
@@ -124,17 +129,18 @@ def addBid():
             print('price listed: ', priceListed)
             sellerID = fetchResult[4]
             print('receiver id: ', sellerID)
+            print('item id: ', itemID)
 
             notiMessage = "'" + 'This is a notification message.' + "',"
-            bidRequest = "'" + 'bid request' + "',"
+            bidRequest = "'" + 'Bid Request' + "',"
             sent = "'" + 'sent' + "'"
             receiverID = "'" + sellerID + "',"
-            senderID = "" + bidderID + ","
+            senderID = "" + bidderIDStr + ","
             itemID = "" + itemID + ","
 
             cursor.execute("INSERT INTO notifications (notification_type, receiver_id, sender_id, item_id, message, status) "
                            "VALUES (" + bidRequest + receiverID + senderID + itemID + notiMessage + sent + ")")
-        addNotification(quant, bidderID, bidPrice, itemID)
+        addNotification(quant, bidderID, itemID)
 
     elif quant > quantAvailable:
         print("The quantity you requested is more than the amount the seller is selling.")
