@@ -33,17 +33,6 @@ class Home extends React.Component {
                                         Description: {item.itemDescription} <br/>
                                         Price: ${item.itemPrice} <br/>
                                         Quantity: {item.itemQuantity} <br/> <br/> </div>))}
-
-                {/*<p>Logout:</p>*/}
-                {/*<button onClick={() => setLoggedIn(false)}>Logout</button>*/}
-                {/*{this.state.logout}*/}
-                </div>
-                <div>
-                    <p>If you want to add item(s) to sell:</p>
-                        <ul>
-                            <Link to="/addItem">Add Items</Link>
-                        </ul> <br/> <br/>
-                    <Link to={"/myAccount"}><button type={"button"}>My Account</button></Link>
                 </div>
             </div>
         );

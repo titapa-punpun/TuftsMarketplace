@@ -24,7 +24,7 @@ export default function App() {
             <div style={{width: '100vw'}}>
                 {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
-                <Route path={['/home', '/addItem', '/myAccount']} render={(props) => <Header {...props} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>}/>
+                <Route path={['/home', '/addItem', '/addBid','/myAccount']} render={(props) => <Header {...props} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>}/>
                 <Switch>
                     <Route exact path="/createUser">
                         <CreateUser/>

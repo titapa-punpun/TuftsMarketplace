@@ -1,0 +1,19 @@
+#toptitle{
+    text-align: left;
+    font-family: Futura;
+    color: #D2691E;
+    font-size: 25px;
+    margin-top: 10px;
+    width: 300px;
+    margin-left: 10px;
+    /*height: 5px;*/
+}
+#topsubtitle{
+    text-shadow: none;
+    font-size: 16px;
+    margin-left: 10px;
+    color: #D2691E;
+}
+a:visited{
+    color:white;
+}
