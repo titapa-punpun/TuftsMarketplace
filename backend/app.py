@@ -114,7 +114,7 @@ def addBid():
     if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
         cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity") '
                        'VALUES({}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity))
-        def addNotification(bidQuant, bidderIDStr, itemID):
+        def addNotification(bidQuant, bidderIDStr, itemID, bidderName):
             print('bid quant: ', bidQuant)
             print('sender id: ', bidderIDStr)
 
@@ -131,7 +131,9 @@ def addBid():
             print('receiver id: ', sellerID)
             print('item id: ', itemID)
 
-            notiMessage = "'" + 'This is a notification message.' + "',"
+            bidPrice = (content.get('bidInfo')).get('bidPrice')
+
+            notiMessage = "'" + bidderName + ' has put in a request to buy your item ' + itemName + ' for $' + bidPrice + "',"
             bidRequest = "'" + 'Bid Request' + "',"
             sent = "'" + 'sent' + "'"
             receiverID = "'" + sellerID + "',"
@@ -140,7 +142,7 @@ def addBid():
 
             cursor.execute("INSERT INTO notifications (notification_type, receiver_id, sender_id, item_id, message, status) "
                            "VALUES (" + bidRequest + receiverID + senderID + itemID + notiMessage + sent + ")")
-        addNotification(quant, bidderID, itemID)
+        addNotification(quant, bidderID, itemID, bidderName)
 
     elif quant > quantAvailable:
         print("The quantity you requested is more than the amount the seller is selling.")
@@ -148,7 +150,7 @@ def addBid():
     connection.commit()
     return {'success': True}
 
-@app.route('/getNotifications', methods=['POST'])
+@app.route('/getBidOffers', methods=['POST'])
 def getNotifications():
     content = request.json
     userID = "'" + str(content.get('userID')) + "'"

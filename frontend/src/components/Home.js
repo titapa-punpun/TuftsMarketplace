@@ -27,6 +27,7 @@ class Home extends React.Component {
         // console.log('setLoggedIn: ', setLoggedIn);
         return (
             <div>
+                <h1>Items Available</h1>
                 <div style={{display: 'flex', flexWrap: 'wrap'}}>
                     {items.map(item => (<div key={item.itemID}> Item: {item.itemName}
                                         <Link to={"/addBid/" + item.itemID + "/" + item.itemQuantity}><button type={"button"}>Buy</button></Link> <br/>

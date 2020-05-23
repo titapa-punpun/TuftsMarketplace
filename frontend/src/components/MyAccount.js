@@ -11,7 +11,7 @@ class MyAccount extends React.Component {
         const body = {
             userID: this.props.userID,
         };
-        fetch('http://127.0.0.1:5000/getNotifications',
+        fetch('http://127.0.0.1:5000/getBidOffers',
             {method: 'POST',
                 body: JSON.stringify(body),
                 headers: {

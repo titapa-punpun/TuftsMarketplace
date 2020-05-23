@@ -85,6 +85,7 @@ class AddItem extends React.Component {
         const {item} = this.state
         return (
             <div>
+                <h1>Enter Product Information</h1>
                 <form onSubmit = {(event) => {
                     if (this.handleValidation(event, 'name') && this.handleValidation(event, 'description')
                         && this.handleValidation(event, 'price') && this.handleValidation(event, 'quantity')

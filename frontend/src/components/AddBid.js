@@ -94,6 +94,7 @@ class AddBid extends React.Component {
         console.log('bid info: ', bidInfo)
         return (
             <div>
+                <h1>Enter Bidding Information</h1>
                 <form onSubmit={(event) => {
                     if (this.handleValidation(event, 'bidPrice') && this.handleValidation(event, 'quantity')) {
                         this.handleSubmit(event);
