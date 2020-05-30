@@ -69,7 +69,7 @@ class MyListings extends React.Component {
             <div>
                 <h1>My Account</h1>
                 <TableContainer component={Paper}>
-                    <Table>
+                    <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
                                 <TableCell>
@@ -82,7 +82,7 @@ class MyListings extends React.Component {
                                     Quantity
                                 </TableCell>
                                 <TableCell>
-                                    List Price
+                                    List Price ($)
                                 </TableCell>
                                 <TableCell>
                                     Date Listed

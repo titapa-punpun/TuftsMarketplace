@@ -25,12 +25,9 @@ export default function ItemRow({itemAndBid}) {
         <React.Fragment>
             <TableRow>
                 <TableCell>
-                    {open ? <KeyboardArrowUpIcon style={{cursor: 'pointer'}}
-                        onClick={() => setOpen(false)}
-                    /> : <KeyboardArrowDownIcon
-                        style={{cursor: 'pointer'}}
-                        onClick={() => setOpen(true)}
-                    />}
+                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
                 </TableCell>
                 <TableCell>
                     {itemName}
@@ -52,9 +49,11 @@ export default function ItemRow({itemAndBid}) {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open}>
                         <Box margin={1}>
-                            Bids
+                            <Typography variant="h6" gutterBottom component="div">
+                                Bids
+                            </Typography>
                             <TableContainer component={Paper}>
-                                <Table>
+                                <Table size="small" aria-label="purchases">
                                     <TableHead>
                                         <TableRow>
                                             <TableCell/>
