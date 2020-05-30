@@ -6,13 +6,14 @@ import {
     Link,
     Redirect
 } from "react-router-dom";
+import Header from './components/Header'
 import CreateUser from './components/CreateUser'
 import Login from './components/Login'
 import Home from './components/Home'
 import AddItem from './components/AddItem'
 import AddBid from './components/AddBid'
-import MyAccount from './components/MyAccount'
-import Header from './components/Header'
+import MyListings from './components/MyListings'
+
 
 export default function App() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -42,7 +43,8 @@ export default function App() {
                     </Route>
                     <Route exact path="/addBid/:itemID/:quantAvail" render={(props) => <AddBid {...props} userID={userID}/>}>
                     </Route>
-                    <Route exact path="/myAccount" render={(props) => <MyAccount {...props} userID={userID}/>}>
+                    <Route exact path="/myAccount">
+                        <MyListings/>
                     </Route>
                     <Route exact path="/">
                         {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
