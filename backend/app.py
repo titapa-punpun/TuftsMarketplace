@@ -151,7 +151,7 @@ def addBid():
     return {'success': True}
 
 @app.route('/getBidOffers', methods=['POST'])
-def getNotifications():
+def getBidOffers():
     content = request.json
     userID = "'" + str(content.get('userID')) + "'"
     cursor.execute("SELECT * FROM notifications WHERE receiver_id=" + userID + " OR sender_id=" + userID + ";")
@@ -176,6 +176,30 @@ def getNotifications():
     print(dictNotifications)
 
     return dictNotifications
+
+@app.route('/getMyItems', methods=['GET'])
+def getMyItems():
+    content = request.json
+    userID = "'" + str(content.get('userID')) + "'"
+    cursor.execute("SELECT * FROM items WHERE seller_id=" + userID + ";")
+    rows = cursor.fetchall()
+
+    listOfDicts = []
+    for row in rows:
+        myItemsDict = dict()
+        myItemsDict['itemName'] = row[1]
+        myItemsDict['listQuant'] = row[6]
+        myItemsDict['listPrice'] = row[3]
+        listOfDicts.append(myItemsDict)
+
+    print(listOfDicts)
+
+    dictMyItems = dict()
+    dictMyItems['allMyItems'] = listOfDicts
+
+    # return {'allMyItems': listOfDicts}
+    return dictMyItems
+
 
 
 if __name__ == '__main__':
