@@ -184,6 +184,7 @@ def getMyItems():
     cursor.execute("SELECT * FROM items WHERE seller_id=" + userID + ";")
     rows = cursor.fetchall()
 
+    # do nested for loop: for each item, get the bids
     listOfDicts = []
     for row in rows:
         myItemsDict = dict()
