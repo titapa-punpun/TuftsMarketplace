@@ -18,46 +18,81 @@ import ItemRow from './ItemRow'
 
 
 class MyListings extends React.Component {
+    componentDidMount() {
+        const {userID} = this.props;
+        const body = {
+            userID: userID,
+        };
+        fetch('http://127.0.0.1:5000/getMyItems',
+            {
+                method: 'POST',
+                body:JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log(response)
+                if (response.status !== 200) {
+                    console.log('status was not 200, was ', response.status)
+                } else {
+                    return response;
+                }
+            }).then(response => response.json())
+            .then(json => {
+                this.setState({
+                    itemsAndBids: json['allMyItems'],
+                    // notifications: json['notifications'],
+                })
+            }).catch(x => {
+            console.log('no data', x)
+            return('no data')
+        })
+    }
+
     constructor(props) {
         super(props);
         this.state = {
-            itemsAndBids: [
-                {
-                    itemName: 'water bottle',
-                    listQuant: '6',
-                    listPrice: '2.99',
-                    listDate: 'monday',
-                    resolved: false,
-                    bids: [
-                        {
-                            bidDate: 'april',
-                            bidder: 'aspyn',
-                            bidQuant: '2',
-                            bidPrice: '2.99',
-                            acceptBid: false,
-                            rejectBid: false,
-                        }
-                    ]
-                },
-                {
-                    itemName: 'mason jars',
-                    listQuant: '12',
-                    listPrice: '3.99',
-                    listDate: 'monday',
-                    resolved: false,
-                    bids: [
-                        {
-                            bidDate: 'april',
-                            bidder: 'mickey',
-                            bidQuant: '3',
-                            bidPrice: '3.99',
-                            acceptBid: false,
-                            rejectBid: false,
-                        }
-                    ]
-                }
-            ]
-        }
+            itemsAndBids: [],
+        };
+        // this.state = {
+        //     itemsAndBids: [
+        //         {
+        //             itemName: 'water bottle',
+        //             listQuant: '6',
+        //             listPrice: '2.99',
+        //             listDate: 'monday',
+        //             resolved: false,
+        //             bids: [
+        //                 {
+        //                     bidDate: 'april',
+        //                     bidder: 'aspyn',
+        //                     bidQuant: '2',
+        //                     bidPrice: '2.99',
+        //                     acceptBid: false,
+        //                     rejectBid: false,
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             itemName: 'mason jars',
+        //             listQuant: '12',
+        //             listPrice: '3.99',
+        //             listDate: 'monday',
+        //             resolved: false,
+        //             bids: [
+        //                 {
+        //                     bidDate: 'april',
+        //                     bidder: 'mickey',
+        //                     bidQuant: '3',
+        //                     bidPrice: '3.99',
+        //                     acceptBid: false,
+        //                     rejectBid: false,
+        //                 }
+        //             ]
+        //         }
+        //     ]
+        // }
     }
 
 

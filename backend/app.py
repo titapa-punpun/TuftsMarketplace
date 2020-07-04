@@ -150,7 +150,7 @@ def addBid():
     connection.commit()
     return {'success': True}
 
-@app.route('/getBidOffers', methods=['POST'])
+@app.route('/getBidOffers', methods=['GET'])
 def getBidOffers():
     content = request.json
     userID = "'" + str(content.get('userID')) + "'"
@@ -177,7 +177,7 @@ def getBidOffers():
 
     return dictNotifications
 
-@app.route('/getMyItems', methods=['GET'])
+@app.route('/getMyItems', methods=['POST'])
 def getMyItems():
     content = request.json
     userID = "'" + str(content.get('userID')) + "'"
@@ -187,16 +187,38 @@ def getMyItems():
     # do nested for loop: for each item, get the bids
     listOfDicts = []
     for row in rows:
+        itemID = row[0]
         myItemsDict = dict()
         myItemsDict['itemName'] = row[1]
         myItemsDict['listQuant'] = row[6]
         myItemsDict['listPrice'] = row[3]
+        myItemsDict['listDate'] = row[8]
+        myItemsDict['resolved'] = row[7]
+
+        cursor.execute("SELECT * FROM bids WHERE item_id='" + str(itemID) + "';")
+        bids = cursor.fetchall()
+        bidsList = []
+        for bid in bids:
+            currBid = dict()
+            bidderId = bid[2]
+            cursor.execute("SELECT * FROM users where id=" + str(bidderId))
+            firstBidderWithId = cursor.fetchone()
+            currBid['bidder'] = firstBidderWithId[1]
+            currBid['bidPrice'] = bid[3]
+            currBid['bidQuant'] = bid[4]
+            currBid['acceptBid'] = False
+            currBid['rejectBid'] = False
+            bidsList.append(currBid)
+
+        myItemsDict['bids'] = bidsList
+
         listOfDicts.append(myItemsDict)
 
     print(listOfDicts)
 
     dictMyItems = dict()
     dictMyItems['allMyItems'] = listOfDicts
+    # dictMyItems['notifications'] = getNotifications(userID)
 
     # return {'allMyItems': listOfDicts}
     return dictMyItems

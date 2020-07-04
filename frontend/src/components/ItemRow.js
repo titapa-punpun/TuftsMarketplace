@@ -79,6 +79,9 @@ export default function ItemRow({itemAndBid}) {
                                     </TableHead>
                                     <TableBody>
                                         {console.log('bids: ', bids)}
+                                        {bids.length === 0 ? <div>
+                                            No bids
+                                        </div> : <div/>}
                                         {bids.map(bid => (
                                             <TableRow>
                                                 <TableCell/>
