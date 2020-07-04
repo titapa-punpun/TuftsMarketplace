@@ -19,6 +19,8 @@ class AddItem extends React.Component {
             quantity: '',
             sellerID: '',
         };
+
+
         this.state = {item: item, submitted: false};
 
         this.handleChange = this.handleChange.bind(this);
@@ -37,8 +39,10 @@ class AddItem extends React.Component {
 
     /* defining handleSubmit function */
     handleSubmit(event) {
+        const date = new Date();
         /* Here, call backend and give it item info. */
         const body = {
+            date: date.toDateString(),
             item: this.state.item,
         };
         fetch('http://127.0.0.1:5000/addItem',
