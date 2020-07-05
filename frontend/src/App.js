@@ -27,27 +27,33 @@ export default function App() {
                 renders the first one that matches the current URL. */}
                 <Route path={['/home', '/addItem', '/addBid','/myAccount']} render={(props) => <Header {...props} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>}/>
                 <Switch>
-                    <Route exact path="/createUser">
-                        <CreateUser/>
-                    </Route>
-                    <Route exact path="/users">
-                        <Users/>
-                    </Route>
-                    <Route exact path="/login">
-                        <Login setLoggedIn={setLoggedIn} loggedIn={loggedIn} setUserID={setUserID}/>
-                    </Route>
-                    <Route exact path="/home">
-                        {loggedIn ? <Home/> : <Redirect to="/login" />}
-                    </Route>
-                    <Route exact path="/addItem" render={(props) => <AddItem {...props}/>}>
-                    </Route>
-                    <Route exact path="/addBid/:itemID/:quantAvail" render={(props) => <AddBid {...props} userID={userID}/>}>
-                    </Route>
-                    <Route exact path="/myAccount" render={(props) => <MyListings {...props} userID={userID}/>}>
-                    </Route>
-                    <Route exact path="/">
-                        {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
-                    </Route>
+                    <div
+                        style={{
+                            padding: 20
+                        }}
+                    >
+                        <Route exact path="/createUser">
+                            <CreateUser/>
+                        </Route>
+                        <Route exact path="/users">
+                            <Users/>
+                        </Route>
+                        <Route exact path="/login">
+                            <Login setLoggedIn={setLoggedIn} loggedIn={loggedIn} setUserID={setUserID}/>
+                        </Route>
+                        <Route exact path="/home">
+                            {loggedIn ? <Home/> : <Redirect to="/login" />}
+                        </Route>
+                        <Route exact path="/addItem" render={(props) => <AddItem {...props}/>}>
+                        </Route>
+                        <Route exact path="/addBid/:itemID/:quantAvail" render={(props) => <AddBid {...props} userID={userID}/>}>
+                        </Route>
+                        <Route exact path="/myAccount" render={(props) => <MyListings {...props} userID={userID}/>}>
+                        </Route>
+                        <Route exact path="/">
+                            {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
+                        </Route>
+                    </div>
                 </Switch>
             </div>
         </Router>

@@ -96,6 +96,7 @@ def addBid():
     bidderID = "'" + str(content.get('bidderID')) + "'"
     bidPrice = "'" + (content.get('bidInfo')).get('bidPrice') + "'"
     itemID = (content.get('itemID'))
+    bidDate = "'" + content.get('date') + "'"
 
     # get to and retrieve quantity of that item from db to check quantity available
     cursor.execute("SELECT quantity FROM items WHERE id=" + itemID + ";")
@@ -113,8 +114,8 @@ def addBid():
     print('bidder name: ', bidderName)
 
     if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
-        cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity") '
-                       'VALUES({}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity))
+        cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity", "bid_date") '
+                       'VALUES({}, {}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity, bidDate))
         def addNotification(bidQuant, bidderIDStr, itemID, bidderName):
             print('bid quant: ', bidQuant)
             print('sender id: ', bidderIDStr)
@@ -207,6 +208,7 @@ def getMyItems():
             currBid['bidder'] = firstBidderWithId[1]
             currBid['bidPrice'] = bid[3]
             currBid['bidQuant'] = bid[4]
+            currBid['bidDate'] = bid[5]
             currBid['acceptBid'] = False
             currBid['rejectBid'] = False
             bidsList.append(currBid)

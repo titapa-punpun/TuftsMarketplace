@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import {TableCellWrapper} from "./Helpers";
 
 export default function ItemRow({itemAndBid}) {
     const {itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid;
@@ -56,25 +57,25 @@ export default function ItemRow({itemAndBid}) {
                                 <Table size="small" aria-label="purchases">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell/>
-                                            <TableCell>
+                                            <TableCellWrapper/>
+                                            <TableCellWrapper>
                                                 Date
-                                            </TableCell>
-                                            <TableCell>
+                                            </TableCellWrapper>
+                                            <TableCellWrapper>
                                                 Bidder/Customer
-                                            </TableCell>
-                                            <TableCell>
+                                            </TableCellWrapper>
+                                            <TableCellWrapper>
                                                 Quantity
-                                            </TableCell>
-                                            <TableCell>
+                                            </TableCellWrapper>
+                                            <TableCellWrapper>
                                                 Bid Price
-                                            </TableCell>
-                                            <TableCell>
+                                            </TableCellWrapper>
+                                            <TableCellWrapper>
                                                 Accept
-                                            </TableCell>
-                                            <TableCell>
+                                            </TableCellWrapper>
+                                            <TableCellWrapper>
                                                 Reject
-                                            </TableCell>
+                                            </TableCellWrapper>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>

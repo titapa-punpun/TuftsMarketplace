@@ -14,7 +14,10 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Checkbox from '@material-ui/core/Checkbox';
 import ItemRow from './ItemRow'
+import {TableCellWrapper} from './Helpers'
+
 
 
 class MyListings extends React.Component {
@@ -55,47 +58,7 @@ class MyListings extends React.Component {
         this.state = {
             itemsAndBids: [],
         };
-        // this.state = {
-        //     itemsAndBids: [
-        //         {
-        //             itemName: 'water bottle',
-        //             listQuant: '6',
-        //             listPrice: '2.99',
-        //             listDate: 'monday',
-        //             resolved: false,
-        //             bids: [
-        //                 {
-        //                     bidDate: 'april',
-        //                     bidder: 'aspyn',
-        //                     bidQuant: '2',
-        //                     bidPrice: '2.99',
-        //                     acceptBid: false,
-        //                     rejectBid: false,
-        //                 }
-        //             ]
-        //         },
-        //         {
-        //             itemName: 'mason jars',
-        //             listQuant: '12',
-        //             listPrice: '3.99',
-        //             listDate: 'monday',
-        //             resolved: false,
-        //             bids: [
-        //                 {
-        //                     bidDate: 'april',
-        //                     bidder: 'mickey',
-        //                     bidQuant: '3',
-        //                     bidPrice: '3.99',
-        //                     acceptBid: false,
-        //                     rejectBid: false,
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // }
     }
-
-
 
     render() {
         const {itemsAndBids} = this.state;
@@ -107,24 +70,24 @@ class MyListings extends React.Component {
                     <Table aria-label="collapsible table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>
+                                <TableCellWrapper>
                                     Open
-                                </TableCell>
-                                <TableCell>
+                                </TableCellWrapper>
+                                <TableCellWrapper>
                                     Item Name
-                                </TableCell>
-                                <TableCell>
+                                </TableCellWrapper>
+                                <TableCellWrapper>
                                     Quantity
-                                </TableCell>
-                                <TableCell>
+                                </TableCellWrapper>
+                                <TableCellWrapper>
                                     List Price ($)
-                                </TableCell>
-                                <TableCell>
+                                </TableCellWrapper>
+                                <TableCellWrapper>
                                     Date Listed
-                                </TableCell>
-                                <TableCell>
+                                </TableCellWrapper>
+                                <TableCellWrapper>
                                     Resolved
-                                </TableCell>
+                                </TableCellWrapper>
                             </TableRow>
                         </TableHead>
                         <TableBody>
