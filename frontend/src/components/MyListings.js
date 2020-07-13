@@ -14,7 +14,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Checkbox from '@material-ui/core/Checkbox';
 import ItemRow from './ItemRow'
 import {TableCellWrapper} from './Helpers'
 
@@ -86,7 +85,7 @@ class MyListings extends React.Component {
                                     Date Listed
                                 </TableCellWrapper>
                                 <TableCellWrapper>
-                                    Resolved
+                                    Resolve
                                 </TableCellWrapper>
                             </TableRow>
                         </TableHead>
