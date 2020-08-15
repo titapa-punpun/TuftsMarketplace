@@ -1,1 +1,5 @@
 # TuftsMarketplace
+
+About 
+
+Purpose 
