@@ -27,20 +27,19 @@ class MyListings extends React.Component {
 
     componentDidMount() {
         const {userID} = this.props;
-        console.log("this.props: ", this.props);
         const body = {
             userID: userID,
         };
         fetch('http://127.0.0.1:5000/getMyItems',
             {
                 method: 'POST',
-                body:JSON.stringify(body),
+                body: JSON.stringify(body),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
             .then(response => {
-                console.log(response)
+                console.log("response: ", response)
                 if (response.status !== 200) {
                     console.log('status was not 200, was ', response.status)
                 } else {
@@ -48,6 +47,7 @@ class MyListings extends React.Component {
                 }
             }).then(response => response.json())
             .then(json => {
+                console.log("json response: ", json);
                 this.setState({
                     itemsAndBids: json['allMyItems'],
                     // notifications: json['notifications'],

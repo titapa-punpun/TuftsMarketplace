@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -19,11 +19,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 
 export default function ItemRow({itemAndBid}) {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = checked;
-    // }
-
+    console.log("itemAndBid: ", itemAndBid);
     const {itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid;
 
     console.log('item name: ', itemName);
@@ -35,28 +31,32 @@ export default function ItemRow({itemAndBid}) {
     /* 'acceptChecked' and 'rejectChecked' are lists. */
     const [acceptChecked, setAcceptChecked] = React.useState([]);
     const [rejectChecked, setRejectChecked] = React.useState([]);
+    useEffect(() => {console.log(acceptChecked)}, [acceptChecked]);
 
     const handleChange = (event, id, field) => { // handles checking & unchecking of checkbox
         console.log("bid id: ", id);
         const checked = event.target.checked;
+        console.log("checked: ", checked)
 
         switch (field) {
             case 'acceptBid':
                 if (checked) {
-                    console.log("accept checked: ", acceptChecked);
-                    acceptChecked.push(id);
-                    setAcceptChecked(acceptChecked) // add 'id' into 'acceptChecked' list
-                } else {
-                    console.log("accept checked: ", acceptChecked);
-                    acceptChecked.filter((bidID) => bidID !== id)
+                    const updatedAcceptChecked = acceptChecked.concat([id]) // add 'id' into 'acceptChecked' list
+                    setAcceptChecked(updatedAcceptChecked)
+                } else { // unchecked
+                    acceptChecked.filter((bidID) => bidID !== id) // only keep item ids that weren't accepted
+                    console.log("id: ", id);
+                    console.log("acceptChecked: ", acceptChecked);
                     setAcceptChecked(acceptChecked) // filter out id from 'acceptChecked' list
                 }
                 break;
             case 'rejectBid':
                 if (checked) {
-                    setRejectChecked(rejectChecked.push(id)) // add 'id' into 'rejectChecked'
+                    rejectChecked.push(id)
+                    setRejectChecked(rejectChecked)
                 } else {
-                    setRejectChecked(rejectChecked.filter((bidID) => bidID !== id))
+                    rejectChecked.filter((bidID) => bidID !== id)
+                    setRejectChecked(rejectChecked)
                 }
                 break;
             default:
@@ -64,7 +64,9 @@ export default function ItemRow({itemAndBid}) {
         }
     };
 
-    console.log(acceptChecked)
+    console.log("accept checked OUTSIDE: ", acceptChecked);
+    console.log("reject checked: ", rejectChecked);
+
     return (
         <React.Fragment>
             <TableRow>
@@ -88,8 +90,9 @@ export default function ItemRow({itemAndBid}) {
                 <TableCell align="right">
                     {resolved}
                     <div align={"left"}>
-                        <Checkbox inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
-                                  onChange={(e) => handleChange(e, 'accept')}
+                        <Checkbox
+                            inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
+                            onChange={(e) => handleChange(e, 'accept')}
                         />
                     </div>
                 </TableCell>
@@ -128,13 +131,9 @@ export default function ItemRow({itemAndBid}) {
                                     </TableHead>
                                     <TableBody>
                                         {console.log('bids: ', bids)}
-                                        {bids.length === 0 ? <div>
-                                            No bids
-                                        </div> : <div/>}
+                                        {bids.length === 0 ? <div> No bids </div> : <div/>}
                                         {bids.map(bid => (
-                                            <TableRow
-                                                key={bid.bidId}
-                                            >
+                                            <TableRow key={bid.bidId}>
                                                 <TableCell/>
                                                 <TableCell>
                                                     {bid.bidDate}
@@ -152,19 +151,22 @@ export default function ItemRow({itemAndBid}) {
                                                     <TableCell>
                                                         {bid.acceptBid}
                                                         <div>
-                                                            <Checkbox inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
-                                                                      // if bid.id is in acceptChecked (i.e. it has been accepted, checked becomes true
-                                                                      checked={acceptChecked.includes(bid.bidId)}
-                                                                      onChange={(e) => handleChange(e, bid.bidId, 'acceptBid')}
+                                                            <Checkbox
+                                                                inputProps={{ 'aria-label': 'secondary-checkbox' }}
+                                                                // if bid.id is in acceptChecked (i.e. it has been accepted), checked becomes true
+                                                                checked={acceptChecked.includes(bid.bidId)}
+                                                                // checked={true}
+                                                                onChange={(e) => handleChange(e, bid.bidId, 'acceptBid')}
                                                             />
                                                         </div>
                                                     </TableCell>
                                                     <TableCell align="right">
                                                         {bid.rejectBid}
                                                         <div align={"left"}>
-                                                            <Checkbox inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
-                                                                      checked={rejectChecked.includes(bid.bidId)}
-                                                                      onChange={(e) => handleChange(e, 'rejectBid')}
+                                                            <Checkbox
+                                                                inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
+                                                                checked={rejectChecked.includes(bid.bidId)}
+                                                                onChange={(e) => handleChange(e, bid.bidId, 'rejectBid')}
                                                             />
                                                         </div>
                                                     </TableCell>
