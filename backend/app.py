@@ -209,6 +209,7 @@ def getMyItems():
             currBid['bidPrice'] = bid[3]
             currBid['bidQuant'] = bid[4]
             currBid['bidDate'] = bid[5]
+            currBid['bidId'] = bid[0]
             currBid['acceptBid'] = False
             currBid['rejectBid'] = False
             bidsList.append(currBid)

@@ -27,8 +27,7 @@ export default function App() {
                 renders the first one that matches the current URL. */}
                 <Route path={['/home', '/addItem', '/addBid','/myAccount']} render={(props) => <Header {...props} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>}/>
                 <Switch>
-                    <div
-                        style={{
+                    <div style={{
                             padding: 20
                         }}
                     >
@@ -60,9 +59,9 @@ export default function App() {
     );
 }
 
-function About() {
-    return <h2>About Me</h2>;
-}
+// function About() {
+//     return <h2>About Me</h2>;
+// }
 
 function Users() {
     return <h2>Users</h2>;

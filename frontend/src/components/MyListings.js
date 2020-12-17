@@ -17,11 +17,17 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import ItemRow from './ItemRow'
 import {TableCellWrapper} from './Helpers'
 
-
-
 class MyListings extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            itemsAndBids: [],
+        };
+    }
+
     componentDidMount() {
         const {userID} = this.props;
+        console.log("this.props: ", this.props);
         const body = {
             userID: userID,
         };
@@ -50,13 +56,6 @@ class MyListings extends React.Component {
             console.log('no data', x)
             return('no data')
         })
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            itemsAndBids: [],
-        };
     }
 
     render() {
