@@ -33,9 +33,9 @@ class MyListings extends React.Component {
         fetch('http://127.0.0.1:5000/getMyItems',
             {
                 method: 'POST',
-                body: JSON.stringify(body),
+                body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json' // tells receiver (endpoint) what type 'body' is
                 }
             })
             .then(response => {

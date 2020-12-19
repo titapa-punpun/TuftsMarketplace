@@ -31,11 +31,11 @@ export default function ItemRow({itemAndBid}) {
     /* 'acceptChecked' and 'rejectChecked' are lists. */
     const [acceptChecked, setAcceptChecked] = React.useState([]);
     const [rejectChecked, setRejectChecked] = React.useState([]);
-    useEffect(() => {console.log(acceptChecked)}, [acceptChecked]);
+    // useEffect(() => {console.log(acceptChecked)}, [acceptChecked]);
 
     const handleChange = (event, id, field) => { // handles checking & unchecking of checkbox
-        console.log("bid id: ", id);
-        const checked = event.target.checked;
+        // browser controls 'event' and passes the correct values to us
+        const checked = event.target.checked; // target describes thing operated on (e.g. textbox, checkbox, etc.)
         console.log("checked: ", checked)
 
         switch (field) {
@@ -44,27 +44,26 @@ export default function ItemRow({itemAndBid}) {
                     const updatedAcceptChecked = acceptChecked.concat([id]) // add 'id' into 'acceptChecked' list
                     setAcceptChecked(updatedAcceptChecked)
                 } else { // unchecked
-                    acceptChecked.filter((bidID) => bidID !== id) // only keep item ids that weren't accepted
+                    const updatedAcceptChecked = acceptChecked.filter((bidID) => bidID !== id) // only keep item ids that weren't accepted
                     console.log("id: ", id);
                     console.log("acceptChecked: ", acceptChecked);
-                    setAcceptChecked(acceptChecked) // filter out id from 'acceptChecked' list
+                    setAcceptChecked(updatedAcceptChecked) // filter out id from 'acceptChecked' list
                 }
                 break;
             case 'rejectBid':
                 if (checked) {
-                    rejectChecked.push(id)
-                    setRejectChecked(rejectChecked)
+                    const updatedRejectChecked = rejectChecked.concat([id])
+                    setRejectChecked(updatedRejectChecked)
                 } else {
-                    rejectChecked.filter((bidID) => bidID !== id)
-                    setRejectChecked(rejectChecked)
+                    const updatedRejectChecked = rejectChecked.filter((bidID) => bidID !== id)
+                    setRejectChecked(updatedRejectChecked)
                 }
                 break;
             default:
                 console.log('unrecognized')
         }
     };
-
-    console.log("accept checked OUTSIDE: ", acceptChecked);
+    console.log("accept checked: ", acceptChecked);
     console.log("reject checked: ", rejectChecked);
 
     return (
@@ -154,7 +153,7 @@ export default function ItemRow({itemAndBid}) {
                                                             <Checkbox
                                                                 inputProps={{ 'aria-label': 'secondary-checkbox' }}
                                                                 // if bid.id is in acceptChecked (i.e. it has been accepted), checked becomes true
-                                                                checked={acceptChecked.includes(bid.bidId)}
+                                                                checked={acceptChecked.includes(bid.bidId)} // 'controlled component'
                                                                 // checked={true}
                                                                 onChange={(e) => handleChange(e, bid.bidId, 'acceptBid')}
                                                             />
