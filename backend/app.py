@@ -22,7 +22,6 @@ cursor = connection.cursor()
 def submitUser():
     content = request.json # extracts things from json request
     username = content.get('username') # extracts only username, which is stored as value
-    print(username)
     cursor.execute("SELECT * FROM users WHERE name='" + username + "';")
     if cursor.rowcount != 0: # if user already exists, i.e. there's a row with that user
         abort(406)
@@ -36,7 +35,6 @@ def submitUser():
 def verifyUser():
     content = request.json # extracts things from json request ('body' in frontend)
     username = content.get('username') # extracts only username from frontend, which is stored as value
-    print(username)
     cursor.execute("SELECT * FROM users WHERE name='" + username + "';")
     if cursor.rowcount != 1: # if user doesn't exist, i.e. there's not exactly 1 row for that user
         abort(401)
@@ -52,7 +50,6 @@ def getAllItems():
     cursor.execute("SELECT * FROM items")
     # retrieve every row in 'items' table
     rows = cursor.fetchall()
-    # print("Rows: ", rows)
     listOfDicts = []
     for row in rows:
         itemDict = dict()
@@ -64,8 +61,6 @@ def getAllItems():
         itemDict['itemBuyerID'] = row[5]
         itemDict['itemQuantity'] = row[6]
         listOfDicts.append(itemDict)
-
-    # print(listOfDicts)
 
     dictItems = dict()
     dictItems['allItems'] = listOfDicts
@@ -104,21 +99,16 @@ def addBid():
 
     itemID = "'" + itemID + "'"
 
-    print(quantity, bidderID, bidPrice, itemID)
-
     quant = int((content.get('bidInfo')).get('quantity'))
 
     # retrieve username
     cursor.execute("SELECT name FROM users WHERE id=" + bidderID + ";")
     bidderName = cursor.fetchone()[0]
-    print('bidder name: ', bidderName)
 
     if quant > 0 and quant <= quantAvailable: # if quant makes sense, add info to 'bid' table
         cursor.execute('INSERT INTO "bids"("item_id", "bidder_id", "bid_price", "quantity", "bid_date") '
                        'VALUES({}, {}, {}, {}, {})'.format(itemID, bidderID, bidPrice, quantity, bidDate))
         def addNotification(bidQuant, bidderIDStr, itemID, bidderName):
-            print('bid quant: ', bidQuant)
-            print('sender id: ', bidderIDStr)
 
             # get to and retrieve info of that item from 'items' table
             cursor.execute("SELECT * FROM items WHERE id=" + itemID + ";")
@@ -126,12 +116,8 @@ def addBid():
 
             # fetching specific info of the item
             itemName = fetchResult[1]
-            print('item name: ', itemName)
             priceListed = fetchResult[3]
-            print('price listed: ', priceListed)
             sellerID = fetchResult[4]
-            print('receiver id: ', sellerID)
-            print('item id: ', itemID)
 
             bidPrice = (content.get('bidInfo')).get('bidPrice')
 
@@ -175,8 +161,6 @@ def getBidOffers():
     dictNotifications = dict()
     dictNotifications['allNotifications'] = listOfDicts
 
-    print(dictNotifications)
-
     return dictNotifications
 
 @app.route('/getMyItems', methods=['POST'])
@@ -203,7 +187,7 @@ def getMyItems():
         for bid in bids:
             currBid = dict()
             bidderId = bid[2]
-            cursor.execute("SELECT * FROM users where id=" + str(bidderId))
+            cursor.execute("SELECT * FROM users WHERE id=" + str(bidderId))
             firstBidderWithId = cursor.fetchone()
             currBid['bidder'] = firstBidderWithId[1]
             currBid['bidPrice'] = bid[3]
@@ -218,14 +202,30 @@ def getMyItems():
 
         listOfDicts.append(myItemsDict)
 
-    print(listOfDicts)
-
     dictMyItems = dict()
     dictMyItems['allMyItems'] = listOfDicts
     # dictMyItems['notifications'] = getNotifications(userID)
 
     # return {'allMyItems': listOfDicts}
     return dictMyItems
+
+@app.route('/saveBidResults', methods=['POST'])
+def saveBidResults():
+    content = request.json # this gets everything in frontend's 'body'
+
+    acceptedBids = content.get('acceptedBids')
+    rejectedBids = content.get('rejectedBids')
+
+    for acceptedBid in acceptedBids:
+        cursor.execute("UPDATE bids SET accepted=TRUE WHERE id=" + str(acceptedBid) + ";")
+
+    for rejectedBid in rejectedBids:
+        cursor.execute("UPDATE bids SET accepted=FALSE WHERE id=" + str(rejectedBid) + ";")
+
+    connection.commit()
+    return {}
+
+
 
 
 

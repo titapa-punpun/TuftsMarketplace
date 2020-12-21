@@ -16,23 +16,25 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {TableCellWrapper} from "./Helpers";
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import TextField from "@material-ui/core/TextField";
+import {IOptions as classes} from "glob";
 
 
-export default function ItemRow({itemAndBid}) {
-    console.log("itemAndBid: ", itemAndBid);
-    const {itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid;
+export default function ItemRow({itemAndBid}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
+    const {itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid; // destructuring
 
     console.log('item name: ', itemName);
     console.log('bids: ', bids);
 
     const [open, setOpen] = useState(false); // opening of collapsible table
 
-    /* Accept and Reject bid checkboxes. */
     /* 'acceptChecked' and 'rejectChecked' are lists. */
     const [acceptChecked, setAcceptChecked] = React.useState([]);
     const [rejectChecked, setRejectChecked] = React.useState([]);
     // useEffect(() => {console.log(acceptChecked)}, [acceptChecked]);
 
+    // this is a lambda instead of a function because we're already in a function
     const handleChange = (event, id, field) => { // handles checking & unchecking of checkbox
         // browser controls 'event' and passes the correct values to us
         const checked = event.target.checked; // target describes thing operated on (e.g. textbox, checkbox, etc.)
@@ -65,6 +67,23 @@ export default function ItemRow({itemAndBid}) {
     };
     console.log("accept checked: ", acceptChecked);
     console.log("reject checked: ", rejectChecked);
+
+    const handleSave = () => {
+        const body = {
+            acceptedBids: acceptChecked,
+            rejectedBids: rejectChecked,
+        };
+        fetch('http://127.0.0.1:5000/saveBidResults',
+            {
+                method: 'POST',
+                body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
+                headers: {
+                    'Content-Type': 'application/json' // tells receiver (endpoint) what type 'body' is
+                }
+            }
+        )
+    }
+
 
     return (
         <React.Fragment>
@@ -149,14 +168,16 @@ export default function ItemRow({itemAndBid}) {
                                                 <React.Fragment>
                                                     <TableCell>
                                                         {bid.acceptBid}
-                                                        <div>
-                                                            <Checkbox
-                                                                inputProps={{ 'aria-label': 'secondary-checkbox' }}
-                                                                // if bid.id is in acceptChecked (i.e. it has been accepted), checked becomes true
-                                                                checked={acceptChecked.includes(bid.bidId)} // 'controlled component'
-                                                                // checked={true}
-                                                                onChange={(e) => handleChange(e, bid.bidId, 'acceptBid')}
-                                                            />
+                                                        <div style={{width: '100px'}}>
+                                                            <form>
+                                                                <TextField
+                                                                    id="outlined-basic"
+                                                                    label="quantity"
+                                                                    variant="outlined"
+                                                                    size="small"
+
+                                                                />
+                                                            </form>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell align="right">
@@ -164,17 +185,22 @@ export default function ItemRow({itemAndBid}) {
                                                         <div align={"left"}>
                                                             <Checkbox
                                                                 inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
-                                                                checked={rejectChecked.includes(bid.bidId)}
+                                                                // if bid.id is in rejectChecked (i.e. it has been rejected), checked becomes true
+                                                                checked={rejectChecked.includes(bid.bidId)} // controlled component
                                                                 onChange={(e) => handleChange(e, bid.bidId, 'rejectBid')}
                                                             />
                                                         </div>
                                                     </TableCell>
                                                 </React.Fragment>
-
                                             </TableRow>
                                         ))}
                                     </TableBody>
                                 </Table>
+                                <div style={{display: 'flex', width: '500', flexDirection: 'row-reverse'}}>
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => handleSave()}>Save</Button>
+                                </div>
                             </TableContainer>
                         </Box>
                     </Collapse>
