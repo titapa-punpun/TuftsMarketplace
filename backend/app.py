@@ -214,11 +214,10 @@ def saveBidResults():
     bids = content.get('bids')
     print("bids: ", bids)
 
-#     for acceptedBid in acceptedBids:
-#         cursor.execute("UPDATE bids SET accepted=TRUE WHERE id=" + str(acceptedBid) + ";")
-#
-#     for rejectedBid in rejectedBids:
-#         cursor.execute("UPDATE bids SET accepted=FALSE WHERE id=" + str(rejectedBid) + ";")
+    for bid in bids:
+        cursor.execute("UPDATE bids SET rejected=TRUE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=TRUE;")
+        cursor.execute("UPDATE bids SET rejected=FALSE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=FALSE;")
+        cursor.execute("UPDATE bids SET accept_quant=" + str(bid['acceptQuant']) + "WHERE id=" + str(bid['bidId']) + ";")
 
     connection.commit()
     return {}
