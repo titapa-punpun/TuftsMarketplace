@@ -63,6 +63,13 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                         }
                         tempUpdatedBids2.push(updatedBids[i]);
                     }
+                } else { // unchecking 'reject' checkbox
+                    for (let i = 0; i < updatedBids.length; i++) {
+                        if (updatedBids[i].bidId === id) {
+                            updatedBids[i].rejected = false;
+                        }
+                        tempUpdatedBids2.push(updatedBids[i]);
+                    }
                 }
                 setUpdatedBids(tempUpdatedBids2);
                 break;
@@ -85,7 +92,17 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                 }
             }
         )
-    }
+    };
+
+    // const buttonDisabled = (id) => {
+    //     if (updatedBids[id].acceptQuant !== 0 && updatedBids[id].rejected === true) {
+    //         console.log("You may not accept and reject a bid at the same time.")
+    //         return true
+    //     } else {
+    //         return false
+    //     }
+    // };
+    const buttonDisabled = updatedBids.filter(bid => (bid.acceptQuant === 0 && !bid.rejected)).length !== 0;
 
     console.log('rerender')
     return (
@@ -198,8 +215,11 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                                 </Table>
                                 <div style={{display: 'flex', width: '500', flexDirection: 'row-reverse'}}>
                                     <Button
+                                        disabled={buttonDisabled}
                                         variant="outlined"
-                                        onClick={() => handleSave()}>Save</Button>
+                                        onClick={() => handleSave()}>
+                                        Save
+                                    </Button>
                                 </div>
                             </TableContainer>
                         </Box>
