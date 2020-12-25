@@ -94,10 +94,11 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
         )
     };
 
-    const buttonDisabled = updatedBids.filter(bid =>
-        (bid.acceptQuant === 0 && !bid.rejected) || (bid.acceptQuant > 0 && bid.rejected)).length !== 0;
+    const buttonDisabled =
+        updatedBids.filter(bid =>
+            (bid.acceptQuant === 0 && !bid.rejected)
+             || (bid.acceptQuant > 0 && bid.rejected) || (bid.acceptQuant === '' && !bid.rejected)).length !== 0;
 
-    console.log('rerender')
     return (
         <React.Fragment>
             <TableRow>

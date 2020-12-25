@@ -217,7 +217,8 @@ def saveBidResults():
     for bid in bids:
         cursor.execute("UPDATE bids SET rejected=TRUE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=TRUE;")
         cursor.execute("UPDATE bids SET rejected=FALSE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=FALSE;")
-        cursor.execute("UPDATE bids SET accept_quant=" + str(bid['acceptQuant']) + "WHERE id=" + str(bid['bidId']) + ";")
+        if (bid['acceptQuant'] != '' and int(bid['acceptQuant']) > 0 ):
+            cursor.execute("UPDATE bids SET accept_quant=" + str(bid['acceptQuant']) + " WHERE id=" + str(bid['bidId']) + ";")
 
     connection.commit()
     return {}
