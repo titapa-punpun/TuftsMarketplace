@@ -20,7 +20,6 @@ class AddItem extends React.Component {
             sellerID: '',
         };
 
-
         this.state = {item: item, submitted: false};
 
         this.handleChange = this.handleChange.bind(this);

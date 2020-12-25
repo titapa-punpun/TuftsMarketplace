@@ -194,8 +194,6 @@ def getMyItems():
             currBid['bidQuant'] = bid[4]
             currBid['bidDate'] = bid[5]
             currBid['bidId'] = bid[0]
-            currBid['acceptBid'] = False
-            currBid['rejectBid'] = False
             bidsList.append(currBid)
 
         myItemsDict['bids'] = bidsList
@@ -213,14 +211,14 @@ def getMyItems():
 def saveBidResults():
     content = request.json # this gets everything in frontend's 'body'
 
-    acceptedBids = content.get('acceptedBids')
-    rejectedBids = content.get('rejectedBids')
+    bids = content.get('bids')
+    print("bids: ", bids)
 
-    for acceptedBid in acceptedBids:
-        cursor.execute("UPDATE bids SET accepted=TRUE WHERE id=" + str(acceptedBid) + ";")
-
-    for rejectedBid in rejectedBids:
-        cursor.execute("UPDATE bids SET accepted=FALSE WHERE id=" + str(rejectedBid) + ";")
+#     for acceptedBid in acceptedBids:
+#         cursor.execute("UPDATE bids SET accepted=TRUE WHERE id=" + str(acceptedBid) + ";")
+#
+#     for rejectedBid in rejectedBids:
+#         cursor.execute("UPDATE bids SET accepted=FALSE WHERE id=" + str(rejectedBid) + ";")
 
     connection.commit()
     return {}

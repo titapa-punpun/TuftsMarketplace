@@ -18,61 +18,64 @@ import {TableCellWrapper} from "./Helpers";
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField";
-import {IOptions as classes} from "glob";
-
 
 export default function ItemRow({itemAndBid}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
+    // console.log("itemAndBid: ", itemAndBid);
     const {itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid; // destructuring
 
-    console.log('item name: ', itemName);
-    console.log('bids: ', bids);
-
     const [open, setOpen] = useState(false); // opening of collapsible table
+    const [updatedBids, setUpdatedBids] = useState([]);
 
-    /* 'acceptChecked' and 'rejectChecked' are lists. */
-    const [acceptChecked, setAcceptChecked] = React.useState([]);
-    const [rejectChecked, setRejectChecked] = React.useState([]);
-    // useEffect(() => {console.log(acceptChecked)}, [acceptChecked]);
+    useEffect(() => {
+        const updatedBids = bids.map((bid) => {
+            bid.acceptQuant = 0;
+            bid.rejected = false;
+            return bid;
+        });
+        setUpdatedBids(updatedBids);
+    }, []);
 
     // this is a lambda instead of a function because we're already in a function
-    const handleChange = (event, id, field) => { // handles checking & unchecking of checkbox
+    const handleChange = (event, id, field) => {
         // browser controls 'event' and passes the correct values to us
         const checked = event.target.checked; // target describes thing operated on (e.g. textbox, checkbox, etc.)
-        console.log("checked: ", checked)
+        const acceptQuant = event.target.value;
 
         switch (field) {
             case 'acceptBid':
-                if (checked) {
-                    const updatedAcceptChecked = acceptChecked.concat([id]) // add 'id' into 'acceptChecked' list
-                    setAcceptChecked(updatedAcceptChecked)
-                } else { // unchecked
-                    const updatedAcceptChecked = acceptChecked.filter((bidID) => bidID !== id) // only keep item ids that weren't accepted
-                    console.log("id: ", id);
-                    console.log("acceptChecked: ", acceptChecked);
-                    setAcceptChecked(updatedAcceptChecked) // filter out id from 'acceptChecked' list
+                const tempUpdatedBids1 = [];
+                for (let i = 0; i < updatedBids.length; i++) {
+                    if (updatedBids[i].bidId === id) {
+                        updatedBids[i].acceptQuant = acceptQuant;
+                    } else {
+                        console.log("The quantity you accept must be > 0.")
+                    }
+                    tempUpdatedBids1.push(updatedBids[i]);
                 }
+                setUpdatedBids(tempUpdatedBids1);
                 break;
             case 'rejectBid':
+                const tempUpdatedBids2 = [];
                 if (checked) {
-                    const updatedRejectChecked = rejectChecked.concat([id])
-                    setRejectChecked(updatedRejectChecked)
-                } else {
-                    const updatedRejectChecked = rejectChecked.filter((bidID) => bidID !== id)
-                    setRejectChecked(updatedRejectChecked)
+                    for (let i = 0; i < updatedBids.length; i++) {
+                        if (updatedBids[i].bidId === id) {
+                            updatedBids[i].rejected = true;
+                        }
+                        tempUpdatedBids2.push(updatedBids[i]);
+                    }
                 }
+                setUpdatedBids(tempUpdatedBids2);
                 break;
             default:
                 console.log('unrecognized')
         }
     };
-    console.log("accept checked: ", acceptChecked);
-    console.log("reject checked: ", rejectChecked);
 
     const handleSave = () => {
         const body = {
-            acceptedBids: acceptChecked,
-            rejectedBids: rejectChecked,
+            bids: bids,
         };
+        console.log("body's bids: ", bids);
         fetch('http://127.0.0.1:5000/saveBidResults',
             {
                 method: 'POST',
@@ -84,7 +87,7 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
         )
     }
 
-
+    console.log('rerender')
     return (
         <React.Fragment>
             <TableRow>
@@ -149,8 +152,8 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                                     </TableHead>
                                     <TableBody>
                                         {console.log('bids: ', bids)}
-                                        {bids.length === 0 ? <div> No bids </div> : <div/>}
-                                        {bids.map(bid => (
+                                        {updatedBids.length === 0 ? <div> No bids </div> : <div/>}
+                                        {updatedBids.map(bid => (
                                             <TableRow key={bid.bidId}>
                                                 <TableCell/>
                                                 <TableCell>
@@ -167,7 +170,6 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                                                 </TableCell>
                                                 <React.Fragment>
                                                     <TableCell>
-                                                        {bid.acceptBid}
                                                         <div style={{width: '100px'}}>
                                                             <form>
                                                                 <TextField
@@ -175,18 +177,16 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                                                                     label="quantity"
                                                                     variant="outlined"
                                                                     size="small"
-
+                                                                    value={bid.acceptQuant} // controlled component
+                                                                    onChange={(e) => handleChange(e, bid.bidId, 'acceptBid')}
                                                                 />
                                                             </form>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell align="right">
-                                                        {bid.rejectBid}
                                                         <div align={"left"}>
                                                             <Checkbox
-                                                                inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
-                                                                // if bid.id is in rejectChecked (i.e. it has been rejected), checked becomes true
-                                                                checked={rejectChecked.includes(bid.bidId)} // controlled component
+                                                                checked={bid.rejected} // controlled component
                                                                 onChange={(e) => handleChange(e, bid.bidId, 'rejectBid')}
                                                             />
                                                         </div>
