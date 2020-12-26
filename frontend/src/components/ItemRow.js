@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
@@ -208,10 +206,7 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                                     </TableBody>
                                 </Table>
                                 <div style={{display: 'flex', width: '500', flexDirection: 'row-reverse'}}>
-                                    <Button
-                                        disabled={buttonDisabled}
-                                        variant="outlined"
-                                        onClick={() => handleSave()}>
+                                    <Button disabled={buttonDisabled} variant="outlined" onClick={() => handleSave()}>
                                         Save
                                     </Button>
                                 </div>
