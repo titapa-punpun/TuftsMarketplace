@@ -13,6 +13,7 @@ import Home from './components/Home'
 import AddItem from './components/AddItem'
 import AddBid from './components/AddBid'
 import MyListings from './components/MyListings'
+import MyAccount from './components/MyAccount'
 
 
 export default function App() {
@@ -47,7 +48,9 @@ export default function App() {
                         </Route>
                         <Route exact path="/addBid/:itemID/:quantAvail" render={(props) => <AddBid {...props} userID={userID}/>}>
                         </Route>
-                        <Route exact path="/myAccount" render={(props) => <MyListings {...props} userID={userID}/>}>
+                        <Route exact path="/myAccount" render={(props) => <MyAccount {...props} userID={userID}/>}>
+                        </Route>
+                        <Route exact path="/myAccount/myListings" render={(props) => <MyListings {...props} userID={userID}/>}>
                         </Route>
                         <Route exact path="/">
                             {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}

@@ -55,10 +55,7 @@ class MyListings extends React.Component {
         console.log('items and bids: ', itemsAndBids);
         return (
             <div>
-                <h1>My Account</h1>
-                <Button size="large" variant="outlined">
-                    My Listings
-                </Button>
+                <h2>My Listings</h2>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>

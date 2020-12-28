@@ -31,7 +31,8 @@ class Home extends React.Component {
                     {items.map(item => (<div key={item.itemID}>
                                             Item: {item.itemName}
                                             <Link to={"/addBid/" + item.itemID + "/" + item.itemQuantity}>
-                                                <button type={"button"}>Buy</button></Link> <br/>
+                                                <button type={"button"}>Buy</button>
+                                            </Link><br/>
                                             Description: {item.itemDescription}<br/>
                                             Price: ${item.itemPrice}<br/>
                                             Quantity: {item.itemQuantity}<br/> <br/>
