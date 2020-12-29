@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import ListingItemRow from './ListingItemRow'
 import {TableCellWrapper} from './Helpers'
 
-class MyListings extends React.Component {
+class OrderHistory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -38,9 +38,9 @@ class MyListings extends React.Component {
                 }
             }).then(response => response.json())
             .then(json => {
+                console.log("json response: ", json);
                 this.setState({
                     itemsAndBids: json['allMyItems'],
-                    // notifications: json['notifications'],
                 })
             }).catch(x => {
             console.log('no data', x)
@@ -53,7 +53,7 @@ class MyListings extends React.Component {
         console.log('items and bids: ', itemsAndBids);
         return (
             <div>
-                <h2>My Listings</h2>
+                <h2>Order History</h2>
                 <TableContainer component={Paper}>
                     <Table aria-label="collapsible table">
                         <TableHead>
@@ -74,7 +74,7 @@ class MyListings extends React.Component {
                                     Date Listed
                                 </TableCellWrapper>
                                 <TableCellWrapper>
-                                    Archive
+                                    Resolve
                                 </TableCellWrapper>
                             </TableRow>
                         </TableHead>
@@ -90,4 +90,4 @@ class MyListings extends React.Component {
     }
 }
 
-export default MyListings;
+export default OrderHistory;

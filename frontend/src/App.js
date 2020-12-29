@@ -14,6 +14,8 @@ import AddItem from './components/AddItem'
 import AddBid from './components/AddBid'
 import MyListings from './components/MyListings'
 import MyAccount from './components/MyAccount'
+import Archives from './components/Archives'
+import OrderHistory from "./components/OrderHistory";
 
 
 export default function App() {
@@ -26,12 +28,12 @@ export default function App() {
             <div style={{width: '100vw'}}>
                 {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
-                <Route path={['/home', '/addItem', '/addBid','/myAccount']} render={(props) => <Header {...props} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>}/>
+                <Route path={['/home', '/addItem', '/addBid','/myAccount']}
+                       render={(props) => <Header {...props} setLoggedIn={setLoggedIn} loggedIn={loggedIn}/>}/>
                 <Switch>
                     <div style={{
                             padding: 20
-                        }}
-                    >
+                        }}>
                         <Route exact path="/createUser">
                             <CreateUser/>
                         </Route>
@@ -51,6 +53,10 @@ export default function App() {
                         <Route exact path="/myAccount" render={(props) => <MyAccount {...props} userID={userID}/>}>
                         </Route>
                         <Route exact path="/myAccount/myListings" render={(props) => <MyListings {...props} userID={userID}/>}>
+                        </Route>
+                        <Route exact path="/myAccount/archives" render={(props) => <Archives {...props} userID={userID}/>}>
+                        </Route>
+                        <Route exact path="/myAccount/orderHistory" render={(props) => <OrderHistory {...props} userID={userID}/>}>
                         </Route>
                         <Route exact path="/">
                             {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}

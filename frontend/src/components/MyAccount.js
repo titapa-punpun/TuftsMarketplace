@@ -14,12 +14,16 @@ class MyAccount extends React.Component {
                             My Listings
                         </Button>
                     </Link>
-                    <Button size="large" variant="outlined">
-                        Order History
-                    </Button>
-                    <Button size="large" variant="outlined">
-                        Archives
-                    </Button>
+                    <Link to={"/myAccount/orderHistory"}>
+                        <Button size="large" variant="outlined">
+                            Order History
+                        </Button>
+                    </Link>
+                    <Link to={"/myAccount/archives"}>
+                        <Button size="large" variant="outlined">
+                            Archives
+                        </Button>
+                    </Link>
                 </div>
             </div>
         )

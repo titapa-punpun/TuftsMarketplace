@@ -16,12 +16,18 @@ import {TableCellWrapper} from "./Helpers";
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function ItemRow({itemAndBid}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
+export default function ListingItemRow({itemAndBid}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
     // console.log("itemAndBid: ", itemAndBid);
     const {itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid; // destructuring
 
-    const [open, setOpen] = useState(false); // opening of collapsible table
+    const [openTable, setOpenTable] = useState(false); // opening of collapsible table
+    const [openArchiveMessage, setOpenArchiveMessage] = useState(false);
     const [updatedBids, setUpdatedBids] = useState([]);
 
     useEffect(() => {
@@ -80,7 +86,9 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
         const body = {
             bids: bids,
         };
-        console.log("body's bids: ", bids);
+        if (archiveItem()) {
+            setOpenArchiveMessage(true);
+        }
         fetch('http://127.0.0.1:5000/saveBidResults',
             {
                 method: 'POST',
@@ -97,12 +105,16 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
             (bid.acceptQuant === 0 && !bid.rejected)
              || (bid.acceptQuant > 0 && bid.rejected) || (bid.acceptQuant === '' && !bid.rejected)).length !== 0;
 
+    const archiveItem = () => {
+        return (updatedBids.length === 0 ? false : (updatedBids.reduce((totalAcceptQuant, bid) => totalAcceptQuant + bid.acceptQuant) === listQuant));
+    };
+
     return (
         <React.Fragment>
             <TableRow>
                 <TableCell>
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    <IconButton aria-label="expand row" size="small" onClick={() => setOpenTable(!openTable)}>
+                        {openTable ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
                 <TableCell>
@@ -121,15 +133,14 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                     {resolved}
                     <div align={"left"}>
                         <Checkbox
-                            inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
-                            onChange={(e) => handleChange(e, 'accept')}
+                            onChange={(e) => handleChange(e, 'resolve')}
                         />
                     </div>
                 </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open}>
+                    <Collapse in={openTable}>
                         <Box margin={1}>
                             <Typography variant="h6" gutterBottom component="div">
                                 Bids
@@ -160,7 +171,6 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {console.log('bids: ', bids)}
                                         {updatedBids.length === 0 ? <div> No bids </div> : <div/>}
                                         {updatedBids.map(bid => (
                                             <TableRow key={bid.bidId}>
@@ -209,6 +219,24 @@ export default function ItemRow({itemAndBid}) { // destructuring in place (from 
                                     <Button disabled={buttonDisabled} variant="outlined" onClick={() => handleSave()}>
                                         Save
                                     </Button>
+                                    <Dialog
+                                        open={openArchiveMessage}
+                                        onClose={() => setOpenArchiveMessage(false)}
+                                    >
+                                        <DialogTitle id="alert-dialog-title">{"Archive Message"}</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText id="alert-dialog-description">
+                                                You are about to accept bid(s) for all available quantities of this
+                                                item of your listing. This item and its associated bid(s) information
+                                                will now be moved to 'Archives'.
+                                            </DialogContentText>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={() => setOpenArchiveMessage(false)} color="primary" autoFocus>
+                                                Ok
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
                                 </div>
                             </TableContainer>
                         </Box>
