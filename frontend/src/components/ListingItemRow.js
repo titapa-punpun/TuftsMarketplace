@@ -106,7 +106,9 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
              || (bid.acceptQuant > 0 && bid.rejected) || (bid.acceptQuant === '' && !bid.rejected)).length !== 0;
 
     const archiveItem = () => {
-        return (updatedBids.length === 0 ? false : (updatedBids.reduce((totalAcceptQuant, bid) => totalAcceptQuant + bid.acceptQuant) === listQuant));
+        return (updatedBids.length === 0 ? false :
+            (updatedBids.reduce((totalAcceptQuant, bid) =>
+                totalAcceptQuant + parseInt(bid.acceptQuant), 0) === parseInt(listQuant)));
     };
 
     return (
