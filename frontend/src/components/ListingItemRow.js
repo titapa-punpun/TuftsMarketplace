@@ -28,6 +28,7 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
 
     const [openTable, setOpenTable] = useState(false); // opening of collapsible table
     const [openArchiveMessage, setOpenArchiveMessage] = useState(false);
+    const [openInvalidAcceptQuantMsg, setOpenInvalidAcceptQuantMsg] = useState(false);
     const [updatedBids, setUpdatedBids] = useState([]);
 
     useEffect(() => {
@@ -88,6 +89,8 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
         };
         if (archiveItem()) {
             setOpenArchiveMessage(true);
+        } else if (!validTotalAcceptQuant()) {
+            setOpenInvalidAcceptQuantMsg(true);
         }
         fetch('http://127.0.0.1:5000/saveBidResults',
             {
@@ -105,10 +108,17 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
             (bid.acceptQuant === 0 && !bid.rejected)
              || (bid.acceptQuant > 0 && bid.rejected) || (bid.acceptQuant === '' && !bid.rejected)).length !== 0;
 
+    // This function checks if sum of all accepted quantities equals the quantity of item listed for sale
     const archiveItem = () => {
         return (updatedBids.length === 0 ? false :
             (updatedBids.reduce((totalAcceptQuant, bid) =>
                 totalAcceptQuant + parseInt(bid.acceptQuant), 0) === parseInt(listQuant)));
+    };
+
+    const validTotalAcceptQuant = () => {
+        return (updatedBids.length === 0 ? false :
+            (updatedBids.reduce((totalAcceptQuant, bid) =>
+                totalAcceptQuant + parseInt(bid.acceptQuant), 0) < parseInt(listQuant)));
     };
 
     return (
@@ -228,13 +238,29 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
                                         <DialogTitle id="alert-dialog-title">{"Archive Message"}</DialogTitle>
                                         <DialogContent>
                                             <DialogContentText id="alert-dialog-description">
-                                                You are about to accept bid(s) for all available quantities of this
-                                                item of your listing. This item and its associated bid(s) information
-                                                will now be moved to 'Archives'.
+                                                You are about to sell all available quantities of this item. This
+                                                item and its associated bid(s) will now be moved to Archives.
                                             </DialogContentText>
                                         </DialogContent>
                                         <DialogActions>
                                             <Button onClick={() => setOpenArchiveMessage(false)} color="primary" autoFocus>
+                                                Ok
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                    <Dialog
+                                        open={openInvalidAcceptQuantMsg}
+                                        onClose={() => setOpenInvalidAcceptQuantMsg(false)}
+                                    >
+                                        <DialogTitle id="alert-dialog-title">{"Invalid Accept Quantity Message"}</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText id="alert-dialog-description">
+                                                You are trying to sell more than you have. Please make sure you only
+                                                sell at most what you have listed as available.
+                                            </DialogContentText>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={() => setOpenInvalidAcceptQuantMsg(false)} color="primary" autoFocus>
                                                 Ok
                                             </Button>
                                         </DialogActions>
