@@ -83,59 +83,6 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
         }
     };
 
-    const handleSave = () => {
-        const body = {
-            bids: bids,
-            archived: archiveItem(),
-        };
-        if (!validTotalAcceptQuant()) {
-            setOpenInvalidAcceptQuantMsg(true);
-            return;
-        }
-        if (archiveItem()) {
-            setOpenArchiveMessage(true);
-        }
-        fetch('http://127.0.0.1:5000/saveBidResults',
-            {
-                method: 'POST',
-                body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
-                headers: {
-                    'Content-Type': 'application/json' // tells receiver (endpoint) what type 'body' is
-                }
-            }
-        ).then(response => response.status)
-            .then(status => {
-                if (status !== 200){
-                    console.log('big bad')
-                } else {
-                    console.log('success')
-                }
-            }).catch(x => {
-                console.log('no data', x)
-                return ('no data')
-            });
-    };
-
-    // Purpose: Returns true if button should remain disabled
-    const buttonDisabled =
-        updatedBids.filter(bid =>
-            (bid.acceptQuant === 0 && !bid.rejected)
-             || (bid.acceptQuant > 0 && bid.rejected) || (bid.acceptQuant === '' && !bid.rejected)).length !== 0;
-
-    // Purpose: Returns true if sum of all accepted quantities equals the quantity of item listed for sale
-    const archiveItem = () => {
-        return (updatedBids.length === 0 ? false :
-            (updatedBids.reduce((totalAcceptQuant, bid) =>
-                totalAcceptQuant + parseInt(bid.acceptQuant), 0) === parseInt(listQuant)));
-    };
-
-    // Purpose: Returns true if sum of all accepted quantities is <= quantity of item listed for sale
-    const validTotalAcceptQuant = () => {
-        return (updatedBids.length === 0 ? false :
-            (updatedBids.reduce((totalAcceptQuant, bid) =>
-                totalAcceptQuant + parseInt(bid.acceptQuant), 0) <= parseInt(listQuant)));
-    };
-
     return (
         <React.Fragment>
             <TableRow>
@@ -155,14 +102,6 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
                 </TableCell>
                 <TableCell>
                     {listDate}
-                </TableCell>
-                <TableCell align="right">
-                    {resolved}
-                    <div align={"left"}>
-                        <Checkbox
-                            onChange={(e) => handleChange(e, 'resolve')}
-                        />
-                    </div>
                 </TableCell>
             </TableRow>
             <TableRow>
@@ -190,10 +129,7 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
                                                 Bid Price
                                             </TableCellWrapper>
                                             <TableCellWrapper>
-                                                Accept
-                                            </TableCellWrapper>
-                                            <TableCellWrapper>
-                                                Reject
+                                                Status
                                             </TableCellWrapper>
                                         </TableRow>
                                     </TableHead>
@@ -214,73 +150,13 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
                                                 <TableCell>
                                                     {bid.bidPrice}
                                                 </TableCell>
-                                                <React.Fragment>
-                                                    <TableCell>
-                                                        <div style={{width: '100px'}}>
-                                                            <form>
-                                                                <TextField
-                                                                    id="outlined-basic"
-                                                                    label="quantity"
-                                                                    variant="outlined"
-                                                                    size="small"
-                                                                    value={bid.acceptQuant} // controlled component
-                                                                    onChange={(e) => handleChange(e, bid.bidId, 'acceptBid')}
-                                                                />
-                                                            </form>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <div align={"left"}>
-                                                            <Checkbox
-                                                                checked={bid.rejected} // controlled component
-                                                                onChange={(e) => handleChange(e, bid.bidId, 'rejectBid')}
-                                                            />
-                                                        </div>
-                                                    </TableCell>
-                                                </React.Fragment>
+                                                <TableCell>
+                                                    Status Here
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
                                 </Table>
-                                <div style={{display: 'flex', width: '500', flexDirection: 'row-reverse'}}>
-                                    <Button disabled={buttonDisabled} variant="outlined" onClick={() => handleSave()}>
-                                        Save
-                                    </Button>
-                                    <Dialog
-                                        open={openArchiveMessage}
-                                        onClose={() => setOpenArchiveMessage(false)}
-                                    >
-                                        <DialogTitle id="alert-dialog-title">{"Archive Message"}</DialogTitle>
-                                        <DialogContent>
-                                            <DialogContentText id="alert-dialog-description">
-                                                You are about to sell all available quantities of this item. This
-                                                item and its associated bid(s) will now be moved to Archives.
-                                            </DialogContentText>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={() => setOpenArchiveMessage(false)} color="primary" autoFocus>
-                                                Ok
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                    <Dialog
-                                        open={openInvalidAcceptQuantMsg}
-                                        onClose={() => setOpenInvalidAcceptQuantMsg(false)}
-                                    >
-                                        <DialogTitle id="alert-dialog-title">{"Invalid Accept Quantity"}</DialogTitle>
-                                        <DialogContent>
-                                            <DialogContentText id="alert-dialog-description">
-                                                You are trying to sell more than you have. Please make sure you only
-                                                sell at most what you have listed as available.
-                                            </DialogContentText>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={() => setOpenInvalidAcceptQuantMsg(false)} color="primary" autoFocus>
-                                                Ok
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                </div>
                             </TableContainer>
                         </Box>
                     </Collapse>

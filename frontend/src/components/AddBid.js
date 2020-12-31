@@ -55,7 +55,7 @@ class AddBid extends React.Component {
                 }})
             .then(response => response.status)
             .then(status => {
-                if (status != 200){
+                if (status !== 200){
                     this.setState({submitted: 'Bid submission failed.'})
                     console.log('big bad')
                 } else {
@@ -65,7 +65,7 @@ class AddBid extends React.Component {
             }).catch(x => {
             console.log('no data', x)
             return('no data')
-        })
+        });
         event.preventDefault();
     }
 

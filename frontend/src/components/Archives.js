@@ -5,7 +5,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import ListingItemRow from './ListingItemRow'
+import ArchiveItemRow from './ArchiveItemRow'
 import {TableCellWrapper} from './Helpers'
 
 class Archives extends React.Component {
@@ -41,7 +41,6 @@ class Archives extends React.Component {
                 console.log("json response: ", json);
                 this.setState({
                     itemsAndBids: json['allMyItems'],
-                    // notifications: json['notifications'],
                 })
             }).catch(x => {
             console.log('no data', x)
@@ -75,13 +74,13 @@ class Archives extends React.Component {
                                     Date Listed
                                 </TableCellWrapper>
                                 <TableCellWrapper>
-                                    Resolve
+                                    Date Archived
                                 </TableCellWrapper>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {itemsAndBids.map((itemAndBid) => (
-                                <ListingItemRow itemAndBid={itemAndBid}/>
+                                <ArchiveItemRow itemAndBid={itemAndBid}/>
                             ))}
                         </TableBody>
                     </Table>

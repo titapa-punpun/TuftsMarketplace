@@ -210,19 +210,26 @@ def getMyItems():
 @app.route('/saveBidResults', methods=['POST'])
 def saveBidResults():
     content = request.json # this gets everything in frontend's 'body'
-
     bids = content.get('bids')
-    print("bids: ", bids)
+    archived = content.get('archived')
 
+    # Updating 'rejected' and 'accept_quant' fields of 'bids' table
     for bid in bids:
         cursor.execute("UPDATE bids SET rejected=TRUE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=TRUE;")
         cursor.execute("UPDATE bids SET rejected=FALSE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=FALSE;")
-        if (bid['acceptQuant'] != '' and int(bid['acceptQuant']) > 0 ):
+        if (bid['acceptQuant'] != '' and int(bid['acceptQuant']) > 0):
             cursor.execute("UPDATE bids SET accept_quant=" + str(bid['acceptQuant']) + " WHERE id=" + str(bid['bidId']) + ";")
+
+    if (archived == True):
+        cursor.execute("SELECT item_id FROM bids WHERE rejected IS NOT NULL OR accept_quant IS NOT NULL")
+        itemIds = cursor.fetchall()
+        for itemId in itemIds:
+            print("item id: ", itemId[0])
+            cursor.execute("UPDATE items SET archived=TRUE WHERE id=" + itemId[0] + ";")
+
 
     connection.commit()
     return {}
-
 
 
 
