@@ -59,13 +59,13 @@ class AddItem extends React.Component {
                     this.setState({
                         submitted: 'Item successfully submitted!',
                         item: {name: '', description: '', price: '', quantity: '', sellerID: ''}
-                    })
+                    });
                     console.log('success')
                 }
             }).catch(x => {
             console.log('no data', x)
             return('no data')
-        })
+        });
         event.preventDefault();
     }
 
@@ -85,7 +85,7 @@ class AddItem extends React.Component {
     }
 
     render() {
-        const {item} = this.state
+        const {item} = this.state;
         return (
             <div>
                 <h1>Enter Product Information</h1>
