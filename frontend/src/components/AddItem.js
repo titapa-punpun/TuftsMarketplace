@@ -38,10 +38,10 @@ class AddItem extends React.Component {
 
     /* defining handleSubmit function */
     handleSubmit(event) {
-        const date = new Date();
+        const dateListed = new Date();
         /* Here, call backend and give it item info. */
         const body = {
-            date: date.toDateString(),
+            dateListed: dateListed.toDateString(),
             item: this.state.item,
         };
         fetch('http://127.0.0.1:5000/addItem',

@@ -84,9 +84,11 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
     };
 
     const handleSave = () => {
+        const archiveDate = new Date();
         const body = {
             bids: bids,
             archived: archiveItem(),
+            archiveDate: archiveDate.toDateString(),
         };
         if (!validTotalAcceptQuant()) {
             setOpenInvalidAcceptQuantMsg(true);

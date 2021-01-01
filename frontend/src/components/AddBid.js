@@ -39,10 +39,10 @@ class AddBid extends React.Component {
 
     /* defining handleSubmit function */
     handleSubmit(event) {
-        const date = new Date();
+        const bidDate = new Date();
         /* Here, call backend and give it item info. */
         const body = {
-            date: date.toDateString(),
+            bidDate: bidDate.toDateString(),
             bidInfo: this.state.bidInfo,
             itemID: this.state.itemID,
             bidderID: this.props.userID,

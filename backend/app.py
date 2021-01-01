@@ -76,7 +76,7 @@ def addItem():
     price = "'" + (content.get('item')).get('price') + "',"
     quantity = "'" + (content.get('item')).get('quantity') + "',"
     sellerID = "'" + (content.get('item')).get('sellerID') + "',"
-    dateListed = "'" + content.get('date') + "'"
+    dateListed = "'" + content.get('dateListed') + "'"
     cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quantity, date_listed) "
                    "VALUES (" + itemName + description + price + sellerID + quantity + dateListed + ")")
     connection.commit()
@@ -91,7 +91,7 @@ def addBid():
     bidderID = "'" + str(content.get('bidderID')) + "'"
     bidPrice = "'" + (content.get('bidInfo')).get('bidPrice') + "'"
     itemID = (content.get('itemID'))
-    bidDate = "'" + content.get('date') + "'"
+    bidDate = "'" + content.get('bidDate') + "'"
 
     # get to and retrieve quantity of that item from db to check quantity available
     cursor.execute("SELECT quantity FROM items WHERE id=" + itemID + ";")
