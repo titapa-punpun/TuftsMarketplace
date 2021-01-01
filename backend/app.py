@@ -214,6 +214,9 @@ def saveBidResults():
     bids = content.get('bids')
     archived = content.get('archived')
     dateArchived = "'" + content.get('archiveDate') + "'"
+    itemId = content.get('itemId')
+    print("itemId: ", itemId)
+    itemId = str(itemId)
 
     # Updating 'rejected' and 'accept_quant' fields of 'bids' table
     for bid in bids:
@@ -223,12 +226,8 @@ def saveBidResults():
             cursor.execute("UPDATE bids SET accept_quant=" + str(bid['acceptQuant']) + " WHERE id=" + str(bid['bidId']) + ";")
 
     if (archived == True):
-        cursor.execute("SELECT item_id FROM bids WHERE rejected IS NOT NULL OR accept_quant IS NOT NULL")
-        itemIds = cursor.fetchall()
-        for itemId in itemIds:
-            print("item id: ", itemId[0])
-            cursor.execute("UPDATE items SET archived=TRUE WHERE id=" + itemId[0] + ";")
-            cursor.execute("UPDATE items SET date_archived=" + dateArchived + " WHERE id=" + itemId[0] + ";")
+        cursor.execute("UPDATE items SET archived=TRUE WHERE id=" + itemId + ";")
+        cursor.execute("UPDATE items SET date_archived=" + dateArchived + " WHERE id=" + itemId + ";")
 
     connection.commit()
     return {}
