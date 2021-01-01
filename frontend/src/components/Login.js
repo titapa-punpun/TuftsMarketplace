@@ -44,15 +44,15 @@ class Login extends React.Component {
                 setLoggedIn(true);
                 setUserID(json.userID);
             }).catch(x => {
-            console.log('no data', x)
+            console.log('no data', x);
             return('no data')
-        })
+        });
         event.preventDefault();
     }
     
 
     render() {
-        console.log('in login');
+        // console.log('in login');
         if (!(this.props.loggedIn))
             return (
                 <div>

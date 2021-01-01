@@ -173,15 +173,16 @@ def getMyItems():
     # do nested for loop: for each item, get the bids
     listOfDicts = []
     for row in rows:
-        itemID = row[0]
+        itemId = row[0]
         myItemsDict = dict()
+        myItemsDict['itemId'] = row[0]
         myItemsDict['itemName'] = row[1]
         myItemsDict['listQuant'] = row[6]
         myItemsDict['listPrice'] = row[3]
         myItemsDict['listDate'] = row[8]
         myItemsDict['resolved'] = row[7]
 
-        cursor.execute("SELECT * FROM bids WHERE item_id='" + str(itemID) + "';")
+        cursor.execute("SELECT * FROM bids WHERE item_id='" + str(itemId) + "';")
         bids = cursor.fetchall()
         bidsList = []
         for bid in bids:
@@ -212,6 +213,7 @@ def saveBidResults():
     content = request.json # this gets everything in frontend's 'body'
     bids = content.get('bids')
     archived = content.get('archived')
+    dateArchived = "'" + content.get('archiveDate') + "'"
 
     # Updating 'rejected' and 'accept_quant' fields of 'bids' table
     for bid in bids:
@@ -226,7 +228,7 @@ def saveBidResults():
         for itemId in itemIds:
             print("item id: ", itemId[0])
             cursor.execute("UPDATE items SET archived=TRUE WHERE id=" + itemId[0] + ";")
-
+            cursor.execute("UPDATE items SET date_archived=" + dateArchived + " WHERE id=" + itemId[0] + ";")
 
     connection.commit()
     return {}

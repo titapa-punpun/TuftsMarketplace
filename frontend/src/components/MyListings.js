@@ -30,7 +30,7 @@ class MyListings extends React.Component {
                 }
             })
             .then(response => {
-                console.log("response: ", response)
+                // console.log("response: ", response);
                 if (response.status !== 200) {
                     console.log('status was not 200, was ', response.status)
                 } else {
@@ -43,7 +43,7 @@ class MyListings extends React.Component {
                     // notifications: json['notifications'],
                 })
             }).catch(x => {
-            console.log('no data', x)
+            console.log('no data', x);
             return('no data')
         })
     }
