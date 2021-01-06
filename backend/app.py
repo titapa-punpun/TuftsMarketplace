@@ -232,6 +232,63 @@ def saveBidResults():
     connection.commit()
     return {}
 
+@app.route('/getArchives', methods=['GET'])
+def getArchives():
+    content = request.json
+    userID = "'" + str(content.get('userID')) + "'"
+    cursor.execute("SELECT * FROM items WHERE seller_id=" + userID + " AND archived=TRUE")
+    archivedItems = cursor.fetchall()
+
+    # do nested for loop: for each item, get the bids
+    archivedItemsList = []
+    for archivedItem in archivedItems:
+        myArchivedItems = dict()
+        myArchivedItems['itemId'] = archivedItem[0]
+        myArchivedItems['itemName'] = archivedItem[1]
+        myArchivedItems['listPrice'] = archivedItem[3]
+        myArchivedItems['buyerId'] = archivedItem[5]
+        myArchivedItems['listQuant'] = archivedItem[6]
+        myArchivedItems['listDate'] = archivedItem[8]
+        myArchivedItems['archiveDate'] = archivedItem[9]
+        cursor.execute("UPDATE items SET archive_status='Sold' WHERE seller_id=" + userID + " AND archived=TRUE" + ";")
+        connection.commit()
+        myArchivedItems['archiveStatus'] = archivedItem[10]
+
+        itemId = archivedItem[0]
+        cursor.execute("SELECT * FROM bids WHERE item_id='" + str(itemId) + "';")
+        bids = cursor.fetchall()
+
+        bidsList = []
+        for bid in bids:
+            currBid = dict()
+
+            bidderId = bid[2]
+            cursor.execute("SELECT * FROM users WHERE id=" + str(bidderId))
+            firstBidderWithId = cursor.fetchone()
+
+            currBid['bidder'] = firstBidderWithId[1]
+            currBid['bidPrice'] = bid[3]
+            currBid['bidQuant'] = bid[4]
+            currBid['bidDate'] = bid[5]
+            currBid['bidId'] = bid[0]
+            bidsList.append(currBid)
+
+        myArchivedItems['bids'] = bidsList
+
+        archivedItemsList.append(myArchivedItems)
+
+    archivedItemsDict = dict()
+    archivedItemsDict['archivedItems'] = archivedItemsList
+
+    return archivedItemsDict
+
+
+
+
+
+
+
+
 
 
 

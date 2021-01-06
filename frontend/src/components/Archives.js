@@ -21,7 +21,7 @@ class Archives extends React.Component {
         const body = {
             userID: userID,
         };
-        fetch('http://127.0.0.1:5000/getMyItems',
+        fetch('http://127.0.0.1:5000/getArchives',
             {
                 method: 'POST',
                 body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
@@ -30,7 +30,6 @@ class Archives extends React.Component {
                 }
             })
             .then(response => {
-                console.log("response: ", response)
                 if (response.status !== 200) {
                     console.log('status was not 200, was ', response.status)
                 } else {
@@ -43,7 +42,7 @@ class Archives extends React.Component {
                     itemsAndBids: json['allMyItems'],
                 })
             }).catch(x => {
-            console.log('no data', x)
+            console.log('no data', x);
             return('no data')
         })
     }
