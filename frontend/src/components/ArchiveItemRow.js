@@ -14,9 +14,9 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {TableCellWrapper} from "./Helpers";
 
-export default function ListingItemRow({itemAndBid}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
-    // console.log("itemAndBid: ", itemAndBid);
-    const {itemId, itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid; // destructuring
+export default function ArchiveItemRow({archivedItem}) {
+    console.log("archived items: ", archivedItem);
+    // const {} = archivedItem; // destructuring
 
     const [openTable, setOpenTable] = useState(false); // opening of collapsible table
 
@@ -28,18 +28,18 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
                         {openTable ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell>
-                    {itemName}
-                </TableCell>
-                <TableCell>
-                    {listQuant}
-                </TableCell>
-                <TableCell>
-                    {listPrice}
-                </TableCell>
-                <TableCell>
-                    {listDate}
-                </TableCell>
+                {/*<TableCell>*/}
+                {/*    {itemName}*/}
+                {/*</TableCell>*/}
+                {/*<TableCell>*/}
+                {/*    {listQuant}*/}
+                {/*</TableCell>*/}
+                {/*<TableCell>*/}
+                {/*    {listPrice}*/}
+                {/*</TableCell>*/}
+                {/*<TableCell>*/}
+                {/*    {listDate}*/}
+                {/*</TableCell>*/}
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -70,29 +70,28 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
                                             </TableCellWrapper>
                                         </TableRow>
                                     </TableHead>
-                                    <TableBody>
-                                        {updatedBids.length === 0 ? <div> No bids </div> : <div/>}
-                                        {updatedBids.map(bid => (
-                                            <TableRow key={bid.bidId}>
-                                                <TableCell/>
-                                                <TableCell>
-                                                    {bid.bidDate}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {bid.bidder}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {bid.bidQuant}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {bid.bidPrice}
-                                                </TableCell>
-                                                <TableCell>
-                                                    Status Here
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
+                                    {/*<TableBody>*/}
+                                    {/*    {bids.map(bid => (*/}
+                                    {/*        <TableRow key={bid.bidId}>*/}
+                                    {/*            <TableCell/>*/}
+                                    {/*            <TableCell>*/}
+                                    {/*                {bid.bidDate}*/}
+                                    {/*            </TableCell>*/}
+                                    {/*            <TableCell>*/}
+                                    {/*                {bid.bidder}*/}
+                                    {/*            </TableCell>*/}
+                                    {/*            <TableCell>*/}
+                                    {/*                {bid.bidQuant}*/}
+                                    {/*            </TableCell>*/}
+                                    {/*            <TableCell>*/}
+                                    {/*                {bid.bidPrice}*/}
+                                    {/*            </TableCell>*/}
+                                    {/*            <TableCell>*/}
+                                    {/*                Status Here*/}
+                                    {/*            </TableCell>*/}
+                                    {/*        </TableRow>*/}
+                                    {/*    ))}*/}
+                                    {/*</TableBody>*/}
                                 </Table>
                             </TableContainer>
                         </Box>

@@ -232,7 +232,7 @@ def saveBidResults():
     connection.commit()
     return {}
 
-@app.route('/getArchives', methods=['GET'])
+@app.route('/getArchives', methods=['POST'])
 def getArchives():
     content = request.json
     userID = "'" + str(content.get('userID')) + "'"
@@ -278,7 +278,7 @@ def getArchives():
         archivedItemsList.append(myArchivedItems)
 
     archivedItemsDict = dict()
-    archivedItemsDict['archivedItems'] = archivedItemsList
+    archivedItemsDict['allArchivedItems'] = archivedItemsList
 
     return archivedItemsDict
 

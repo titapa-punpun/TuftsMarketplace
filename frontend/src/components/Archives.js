@@ -12,7 +12,7 @@ class Archives extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            itemsAndBids: [],
+            archivedItems: [],
         };
     }
 
@@ -24,14 +24,14 @@ class Archives extends React.Component {
         fetch('http://127.0.0.1:5000/getArchives',
             {
                 method: 'POST',
-                body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
+                body: JSON.stringify(body),
                 headers: {
-                    'Content-Type': 'application/json' // tells receiver (endpoint) what type 'body' is
+                    'Content-Type': 'application/json'
                 }
             })
             .then(response => {
                 if (response.status !== 200) {
-                    console.log('status was not 200, was ', response.status)
+                    console.log('status was not 200, was', response.status)
                 } else {
                     return response;
                 }
@@ -39,7 +39,7 @@ class Archives extends React.Component {
             .then(json => {
                 console.log("json response: ", json);
                 this.setState({
-                    itemsAndBids: json['allMyItems'],
+                    archivedItems: json['allArchivedItems'],
                 })
             }).catch(x => {
             console.log('no data', x);
@@ -48,8 +48,8 @@ class Archives extends React.Component {
     }
 
     render() {
-        const {itemsAndBids} = this.state;
-        console.log('items and bids: ', itemsAndBids);
+        const {archivedItems} = this.state;
+        console.log('archivedItems: ', archivedItems);
         return (
             <div>
                 <h2>Archives</h2>
@@ -78,8 +78,8 @@ class Archives extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {itemsAndBids.map((itemAndBid) => (
-                                <ArchiveItemRow itemAndBid={itemAndBid}/>
+                            {archivedItems.map((archivedItem) => (
+                                <ArchiveItemRow archivedItem={archivedItem}/>
                             ))}
                         </TableBody>
                     </Table>
