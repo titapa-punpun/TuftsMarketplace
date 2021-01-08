@@ -15,6 +15,7 @@ class MyListings extends React.Component {
             itemsAndBids: [],
         };
         this.updateMyListings = this.updateMyListings.bind(this);
+        this.updateQuantRemaining = this.updateQuantRemaining.bind(this);
     }
 
     componentDidMount() {
@@ -31,7 +32,6 @@ class MyListings extends React.Component {
                 }
             })
             .then(response => {
-                // console.log("response: ", response);
                 if (response.status !== 200) {
                     console.log('status was not 200, was ', response.status)
                 } else {
@@ -41,7 +41,6 @@ class MyListings extends React.Component {
             .then(json => {
                 this.setState({
                     itemsAndBids: json['allMyItems'],
-                    // notifications: json['notifications'],
                 })
             }).catch(x => {
             console.log('no data', x);
@@ -49,9 +48,8 @@ class MyListings extends React.Component {
         })
     }
 
-    // Gets called by child component when appropriate (when archive happens and listings need to be refreshed)
+    // Purpose: Only fetches items NOT archived (called by child component)
     updateMyListings() {
-        console.log("in updateMyListings()");
         const {userID} = this.props;
         const body = {
             userID: userID,
@@ -65,7 +63,6 @@ class MyListings extends React.Component {
                 }
             })
             .then(response => {
-                // console.log("response: ", response);
                 if (response.status !== 200) {
                     console.log('status was not 200, was ', response.status)
                 } else {
@@ -82,9 +79,38 @@ class MyListings extends React.Component {
         })
     }
 
+    // Purpose: Fetches items with updated quantity left for sale (called by child component)
+    updateQuantRemaining(itemId, bids) {
+        const {userID} = this.props;
+        const body = {
+            userID: userID,
+            itemId: itemId,
+            bids: bids,
+        };
+        fetch('http://127.0.0.1:5000/updateQuantRemaining',
+            {
+                method: 'POST',
+                body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
+                headers: {
+                    'Content-Type': 'application/json' // tells receiver (endpoint) what type 'body' is
+                }
+            }
+        ).then(response => response.status)
+            .then(status => {
+                if (status !== 200){
+                    console.log('big bad')
+                } else {
+                    console.log('success')
+                }
+            }).catch(x => {
+            console.log('no data', x);
+            return ('no data')
+        });
+    }
+
     render() {
         const {itemsAndBids} = this.state;
-        // console.log('items and bids: ', itemsAndBids);
+        console.log("items and bids: ", itemsAndBids)
         return (
             <div>
                 <h2>My Listings</h2>
@@ -102,7 +128,7 @@ class MyListings extends React.Component {
                                     Quantity
                                 </TableCellWrapper>
                                 <TableCellWrapper>
-                                    List Price ($)
+                                    List Price
                                 </TableCellWrapper>
                                 <TableCellWrapper>
                                     Date Listed
@@ -115,7 +141,11 @@ class MyListings extends React.Component {
                         <TableBody>
                             {itemsAndBids.length === 0 ? <div> You currently have 0 listings </div> : <div/>}
                             {itemsAndBids.map((itemAndBid) => (
-                                <ListingRow itemAndBid={itemAndBid} updateMyListings={this.updateMyListings}/>
+                                <ListingRow
+                                    itemAndBid={itemAndBid}
+                                    updateMyListings={this.updateMyListings}
+                                    updateQuantRemaining={this.updateQuantRemaining}
+                                />
                             ))}
                         </TableBody>
                     </Table>

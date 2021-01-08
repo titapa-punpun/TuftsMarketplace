@@ -258,14 +258,13 @@ def saveBidResults():
     archived = content.get('archived')
     dateArchived = "'" + content.get('archiveDate') + "'"
     itemId = content.get('itemId')
-    print("itemId: ", itemId)
     itemId = str(itemId)
 
     # Updating 'rejected' and 'accept_quant' fields of 'bids' table
     for bid in bids:
         cursor.execute("UPDATE bids SET rejected=TRUE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=TRUE;")
         cursor.execute("UPDATE bids SET rejected=FALSE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=FALSE;")
-        if (bid['acceptQuant'] != '' and int(bid['acceptQuant']) > 0):
+        if (bid['acceptQuant'] != '' and int(bid['acceptQuant']) > 0): # accept quant is valid
             cursor.execute("UPDATE bids SET accept_quant=" + str(bid['acceptQuant']) + " WHERE id=" + str(bid['bidId']) + ";")
 
     if (archived == True):
@@ -274,6 +273,58 @@ def saveBidResults():
 
     connection.commit()
     return {}
+
+@app.route('/updateQuantRemaining', methods=['POST'])
+def updateQuantRemaining():
+    content = request.json
+    itemId = content.get('itemId')
+    itemId = str(itemId)
+    bids = content.get('bids')
+    userID = "'" + str(content.get('userID')) + "'"
+
+    cursor.execute("SELECT * FROM bids WHERE item_id='" + itemId + "';")
+    bids = cursor.fetchall()
+    print("bids: ", bids)
+    bidsList = []
+    for bid in bids:
+        print("bid[7]: ", bid[7])
+        if (bid[7] != None and int(bid[7]) > 0): # accept quant is valid
+            cursor.execute("SELECT quantity FROM items WHERE id=" + itemId + ";")
+            listingQuant = cursor.fetchone()[0]
+            remainingQuant = int(listingQuant) - int(bid[7])
+            cursor.execute("UPDATE items SET quantity="+ str(remainingQuant) + ";")
+        currBid = dict()
+        bidderId = bid[2]
+        cursor.execute("SELECT * FROM users WHERE id=" + str(bidderId))
+        firstBidderWithId = cursor.fetchone()
+        currBid['bidder'] = firstBidderWithId[1]
+        currBid['bidPrice'] = bid[3]
+        currBid['bidQuant'] = bid[4]
+        currBid['bidDate'] = bid[5]
+        currBid['bidId'] = bid[0]
+        bidsList.append(currBid)
+
+    cursor.execute("SELECT * FROM items WHERE seller_id=" + userID + " AND archived=FALSE;")
+    listings = cursor.fetchall()
+    listOfDicts = []
+    for listing in listings:
+        itemId = listing[0]
+        myItemsDict = dict()
+        myItemsDict['itemId'] = listing[0]
+        myItemsDict['itemName'] = listing[1]
+        myItemsDict['listQuant'] = listing[6]
+        myItemsDict['listPrice'] = listing[3]
+        myItemsDict['listDate'] = listing[8]
+
+        myItemsDict['bids'] = bidsList
+
+        listOfDicts.append(myItemsDict)
+
+    dictMyItems = dict()
+    dictMyItems['myUpdatedListings'] = listOfDicts
+
+    return dictMyItems
+
 
 @app.route('/getArchives', methods=['POST'])
 def getArchives():

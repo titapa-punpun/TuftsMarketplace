@@ -22,7 +22,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function ListingRow({itemAndBid, updateMyListings}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
+export default function ListingRow({itemAndBid, updateMyListings, updateQuantRemaining}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
     const {itemId, itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid; // destructuring
 
     const [openTable, setOpenTable] = useState(false); // opening of collapsible table
@@ -109,12 +109,13 @@ export default function ListingRow({itemAndBid, updateMyListings}) { // destruct
         ).then(response => response.status)
             .then(status => {
                 if (status !== 200){
-                    console.log('big bad')
+                    console.log('big bad');
                 } else {
-                    console.log('success')
+                    console.log('success');
+                    updateQuantRemaining(itemId, bids);
                 }
             }).catch(x => {
-                console.log('no data', x)
+                console.log('no data', x);
                 return ('no data')
             });
     };
@@ -154,7 +155,7 @@ export default function ListingRow({itemAndBid, updateMyListings}) { // destruct
                     {listQuant}
                 </TableCell>
                 <TableCell>
-                    {listPrice}
+                    ${listPrice}
                 </TableCell>
                 <TableCell>
                     {listDate}
@@ -215,7 +216,7 @@ export default function ListingRow({itemAndBid, updateMyListings}) { // destruct
                                                     {bid.bidQuant}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {bid.bidPrice}
+                                                    ${bid.bidPrice}
                                                 </TableCell>
                                                 <React.Fragment>
                                                     <TableCell>
