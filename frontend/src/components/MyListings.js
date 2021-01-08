@@ -5,7 +5,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import ListingItemRow from './ListingItemRow'
+import ListingRow from './ListingRow'
 import {TableCellWrapper} from './Helpers'
 
 class MyListings extends React.Component {
@@ -14,6 +14,7 @@ class MyListings extends React.Component {
         this.state = {
             itemsAndBids: [],
         };
+        this.updateMyListings = this.updateMyListings.bind(this);
     }
 
     componentDidMount() {
@@ -48,9 +49,42 @@ class MyListings extends React.Component {
         })
     }
 
+    // Gets called by child component when appropriate (when archive happens and listings need to be refreshed)
+    updateMyListings() {
+        console.log("in updateMyListings()");
+        const {userID} = this.props;
+        const body = {
+            userID: userID,
+        };
+        fetch('http://127.0.0.1:5000/updateMyListings',
+            {
+                method: 'POST',
+                body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
+                headers: {
+                    'Content-Type': 'application/json' // tells receiver (endpoint) what type 'body' is
+                }
+            })
+            .then(response => {
+                // console.log("response: ", response);
+                if (response.status !== 200) {
+                    console.log('status was not 200, was ', response.status)
+                } else {
+                    return response;
+                }
+            }).then(response => response.json())
+            .then(json => {
+                this.setState({
+                    itemsAndBids: json['myUpdatedListings'],
+                })
+            }).catch(x => {
+            console.log('no data', x);
+            return('no data')
+        })
+    }
+
     render() {
         const {itemsAndBids} = this.state;
-        console.log('items and bids: ', itemsAndBids);
+        // console.log('items and bids: ', itemsAndBids);
         return (
             <div>
                 <h2>My Listings</h2>
@@ -79,8 +113,9 @@ class MyListings extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
+                            {itemsAndBids.length === 0 ? <div> You currently have 0 listings </div> : <div/>}
                             {itemsAndBids.map((itemAndBid) => (
-                                <ListingItemRow itemAndBid={itemAndBid}/>
+                                <ListingRow itemAndBid={itemAndBid} updateMyListings={this.updateMyListings}/>
                             ))}
                         </TableBody>
                     </Table>

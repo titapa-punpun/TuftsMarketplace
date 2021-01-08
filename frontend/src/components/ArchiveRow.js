@@ -14,7 +14,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {TableCellWrapper} from "./Helpers";
 
-export default function ArchiveItemRow({archivedItem}) {
+export default function ArchiveRow({archivedItem}) {
     console.log("archived items: ", archivedItem);
     const {itemId, itemName, listPrice, buyerId, listQuant, listDate, archiveDate, archiveStatus, bids} = archivedItem;
 

@@ -5,7 +5,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import ArchiveItemRow from './ArchiveItemRow'
+import ArchiveRow from './ArchiveRow'
 import {TableCellWrapper} from './Helpers'
 
 class Archives extends React.Component {
@@ -49,7 +49,7 @@ class Archives extends React.Component {
 
     render() {
         const {archivedItems} = this.state;
-        console.log('archivedItems: ', archivedItems);
+        // console.log('archivedItems: ', archivedItems);
         return (
             <div>
                 <h2>Archives</h2>
@@ -64,7 +64,7 @@ class Archives extends React.Component {
                                     Item Name
                                 </TableCellWrapper>
                                 <TableCellWrapper>
-                                    Quantity
+                                    Quantity Listed
                                 </TableCellWrapper>
                                 <TableCellWrapper>
                                     List Price ($)
@@ -73,13 +73,14 @@ class Archives extends React.Component {
                                     Date Listed
                                 </TableCellWrapper>
                                 <TableCellWrapper>
-                                    Date Archived
+                                    Date Archived/Sold
                                 </TableCellWrapper>
                             </TableRow>
                         </TableHead>
                         <TableBody>
+                            {archivedItems.length === 0 ? <div> You currently have 0 archived items </div> : <div/>}
                             {archivedItems.map((archivedItem) => (
-                                <ArchiveItemRow archivedItem={archivedItem}/>
+                                <ArchiveRow archivedItem={archivedItem}/>
                             ))}
                         </TableBody>
                     </Table>

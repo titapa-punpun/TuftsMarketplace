@@ -28,8 +28,8 @@ class AddItem extends React.Component {
 
     /* defining handleChange function */
     handleChange(event, field) {
-        const {item} = this.state // extracting item from state
-        item[field] = event.target.value
+        const {item} = this.state; // extracting item from state
+        item[field] = event.target.value;
         // gets value that user types in
         this.setState({
             item: item
@@ -53,7 +53,7 @@ class AddItem extends React.Component {
             .then(response => response.status)
             .then(status => {
                 if (status != 200){
-                    this.setState({submitted: 'Item submission failed.'})
+                    this.setState({submitted: 'Item submission failed.'});
                     console.log('big bad')
                 } else {
                     this.setState({
@@ -63,7 +63,7 @@ class AddItem extends React.Component {
                     console.log('success')
                 }
             }).catch(x => {
-            console.log('no data', x)
+            console.log('no data', x);
             return('no data')
         });
         event.preventDefault();
@@ -71,13 +71,13 @@ class AddItem extends React.Component {
 
     // checks that all fields have been filled
     handleValidation(event, field) {
-        console.log('in handleValidation')
+        console.log('in handleValidation');
         let item = this.state.item;
         let formIsValid = true;
 
         if (!item[field]) {
             formIsValid = false;
-            this.setState({submitted: 'Field(s) cannot be left blank.'})
+            this.setState({submitted: 'Field(s) cannot be left blank.'});
             console.log('Form empty')
         }
         event.preventDefault();

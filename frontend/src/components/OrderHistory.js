@@ -5,7 +5,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import ListingItemRow from './ListingItemRow'
+import ListingRow from './ListingRow'
 import {TableCellWrapper} from './Helpers'
 
 class OrderHistory extends React.Component {
@@ -80,7 +80,7 @@ class OrderHistory extends React.Component {
                         </TableHead>
                         <TableBody>
                             {itemsAndBids.map((itemAndBid) => (
-                                <ListingItemRow itemAndBid={itemAndBid}/>
+                                <ListingRow itemAndBid={itemAndBid}/>
                             ))}
                         </TableBody>
                     </Table>

@@ -22,7 +22,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function ListingItemRow({itemAndBid}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
+export default function ListingRow({itemAndBid, updateMyListings}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
     const {itemId, itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid; // destructuring
 
     const [openTable, setOpenTable] = useState(false); // opening of collapsible table
@@ -96,6 +96,7 @@ export default function ListingItemRow({itemAndBid}) { // destructuring in place
         }
         if (archiveItem()) {
             setOpenArchiveMessage(true);
+            updateMyListings();
         }
         fetch('http://127.0.0.1:5000/saveBidResults',
             {
