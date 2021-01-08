@@ -16,7 +16,7 @@ import {TableCellWrapper} from "./Helpers";
 
 export default function ArchiveItemRow({archivedItem}) {
     console.log("archived items: ", archivedItem);
-    // const {} = archivedItem; // destructuring
+    const {itemId, itemName, listPrice, buyerId, listQuant, listDate, archiveDate, archiveStatus, bids} = archivedItem;
 
     const [openTable, setOpenTable] = useState(false); // opening of collapsible table
 
@@ -28,18 +28,21 @@ export default function ArchiveItemRow({archivedItem}) {
                         {openTable ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                {/*<TableCell>*/}
-                {/*    {itemName}*/}
-                {/*</TableCell>*/}
-                {/*<TableCell>*/}
-                {/*    {listQuant}*/}
-                {/*</TableCell>*/}
-                {/*<TableCell>*/}
-                {/*    {listPrice}*/}
-                {/*</TableCell>*/}
-                {/*<TableCell>*/}
-                {/*    {listDate}*/}
-                {/*</TableCell>*/}
+                <TableCell>
+                    {itemName}
+                </TableCell>
+                <TableCell>
+                    {listQuant}
+                </TableCell>
+                <TableCell>
+                    {listPrice}
+                </TableCell>
+                <TableCell>
+                    {listDate}
+                </TableCell>
+                <TableCell>
+                    {archiveDate}
+                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -54,13 +57,13 @@ export default function ArchiveItemRow({archivedItem}) {
                                         <TableRow>
                                             <TableCellWrapper/>
                                             <TableCellWrapper>
-                                                Date
+                                                Bid Date
                                             </TableCellWrapper>
                                             <TableCellWrapper>
                                                 Bidder/Customer
                                             </TableCellWrapper>
                                             <TableCellWrapper>
-                                                Quantity
+                                                Quantity Sold
                                             </TableCellWrapper>
                                             <TableCellWrapper>
                                                 Bid Price
@@ -70,28 +73,28 @@ export default function ArchiveItemRow({archivedItem}) {
                                             </TableCellWrapper>
                                         </TableRow>
                                     </TableHead>
-                                    {/*<TableBody>*/}
-                                    {/*    {bids.map(bid => (*/}
-                                    {/*        <TableRow key={bid.bidId}>*/}
-                                    {/*            <TableCell/>*/}
-                                    {/*            <TableCell>*/}
-                                    {/*                {bid.bidDate}*/}
-                                    {/*            </TableCell>*/}
-                                    {/*            <TableCell>*/}
-                                    {/*                {bid.bidder}*/}
-                                    {/*            </TableCell>*/}
-                                    {/*            <TableCell>*/}
-                                    {/*                {bid.bidQuant}*/}
-                                    {/*            </TableCell>*/}
-                                    {/*            <TableCell>*/}
-                                    {/*                {bid.bidPrice}*/}
-                                    {/*            </TableCell>*/}
-                                    {/*            <TableCell>*/}
-                                    {/*                Status Here*/}
-                                    {/*            </TableCell>*/}
-                                    {/*        </TableRow>*/}
-                                    {/*    ))}*/}
-                                    {/*</TableBody>*/}
+                                    <TableBody>
+                                        {bids.map(bid => (
+                                            <TableRow key={bid.bidId}>
+                                                <TableCell/>
+                                                <TableCell>
+                                                    {bid.bidDate}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {bid.bidder}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {bid.bidQuant}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {bid.bidPrice}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {archiveStatus}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
                                 </Table>
                             </TableContainer>
                         </Box>
