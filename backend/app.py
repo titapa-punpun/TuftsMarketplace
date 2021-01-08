@@ -167,7 +167,7 @@ def getBidOffers():
 def getMyItems():
     content = request.json
     userID = "'" + str(content.get('userID')) + "'"
-    cursor.execute("SELECT * FROM items WHERE seller_id=" + userID + ";")
+    cursor.execute("SELECT * FROM items WHERE seller_id=" + userID + " AND archived=FALSE;")
     rows = cursor.fetchall()
 
     # do nested for loop: for each item, get the bids
@@ -206,6 +206,49 @@ def getMyItems():
     # dictMyItems['notifications'] = getNotifications(userID)
 
     # return {'allMyItems': listOfDicts}
+    return dictMyItems
+
+@app.route('/updateMyListings', methods=['POST'])
+def updateMyListings():
+    content = request.json
+    userID = "'" + str(content.get('userID')) + "'"
+    cursor.execute("SELECT * FROM items WHERE seller_id=" + userID + " AND archived=FALSE;")
+    updatedListings = cursor.fetchall()
+
+    # do nested for loop: for each item, get the bids
+    listOfDicts = []
+    for updatedListing in updatedListings:
+        itemId = updatedListing[0]
+        myItemsDict = dict()
+        myItemsDict['itemId'] = updatedListing[0]
+        myItemsDict['itemName'] = updatedListing[1]
+        myItemsDict['listQuant'] = updatedListing[6]
+        myItemsDict['listPrice'] = updatedListing[3]
+        myItemsDict['listDate'] = updatedListing[8]
+        myItemsDict['resolved'] = updatedListing[7]
+
+        cursor.execute("SELECT * FROM bids WHERE item_id='" + str(itemId) + "';")
+        bids = cursor.fetchall()
+        bidsList = []
+        for bid in bids:
+            currBid = dict()
+            bidderId = bid[2]
+            cursor.execute("SELECT * FROM users WHERE id=" + str(bidderId))
+            firstBidderWithId = cursor.fetchone()
+            currBid['bidder'] = firstBidderWithId[1]
+            currBid['bidPrice'] = bid[3]
+            currBid['bidQuant'] = bid[4]
+            currBid['bidDate'] = bid[5]
+            currBid['bidId'] = bid[0]
+            bidsList.append(currBid)
+
+        myItemsDict['bids'] = bidsList
+
+        listOfDicts.append(myItemsDict)
+
+    dictMyItems = dict()
+    dictMyItems['myUpdatedListings'] = listOfDicts
+
     return dictMyItems
 
 @app.route('/saveBidResults', methods=['POST'])
