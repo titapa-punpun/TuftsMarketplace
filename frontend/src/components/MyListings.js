@@ -50,6 +50,7 @@ class MyListings extends React.Component {
 
     // Purpose: Only fetches items NOT archived (called by child component)
     updateMyListings() {
+        console.log("in updateMyListings()");
         const {userID} = this.props;
         const body = {
             userID: userID,
@@ -143,6 +144,7 @@ class MyListings extends React.Component {
                             {itemsAndBids.length === 0 ? <div> You currently have 0 listings </div> : <div/>}
                             {itemsAndBids.map((itemAndBid) => (
                                 <ListingRow
+                                    key={itemAndBid.itemId}
                                     itemAndBid={itemAndBid}
                                     updateMyListings={this.updateMyListings}
                                     updateQuantRemaining={this.updateQuantRemaining}

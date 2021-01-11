@@ -210,10 +210,15 @@ def getMyItems():
 
 @app.route('/updateMyListings', methods=['POST'])
 def updateMyListings():
+    dictMyItems = dict()
     content = request.json
     userID = "'" + str(content.get('userID')) + "'"
     cursor.execute("SELECT * FROM items WHERE seller_id=" + userID + " AND archived=FALSE;")
-    updatedListings = cursor.fetchall()
+    try:
+        updatedListings = cursor.fetchall()
+    except psycopg2.ProgrammingError as error:
+        dictMyItems['myUpdatedListings'] = []
+        return dictMyItems
 
     # do nested for loop: for each item, get the bids
     listOfDicts = []
@@ -227,26 +232,30 @@ def updateMyListings():
         myItemsDict['listDate'] = updatedListing[8]
         myItemsDict['resolved'] = updatedListing[7]
 
-        cursor.execute("SELECT * FROM bids WHERE item_id='" + str(itemId) + "';")
-        bids = cursor.fetchall()
+        print("ITEM ID: ", str(itemId))
+
         bidsList = []
-        for bid in bids:
-            currBid = dict()
-            bidderId = bid[2]
-            cursor.execute("SELECT * FROM users WHERE id=" + str(bidderId))
-            firstBidderWithId = cursor.fetchone()
-            currBid['bidder'] = firstBidderWithId[1]
-            currBid['bidPrice'] = bid[3]
-            currBid['bidQuant'] = bid[4]
-            currBid['bidDate'] = bid[5]
-            currBid['bidId'] = bid[0]
-            bidsList.append(currBid)
+        try:
+            cursor.execute("SELECT * FROM bids WHERE item_id='" + str(itemId) + "';")
+            bids = cursor.fetchall()
+            for bid in bids:
+                currBid = dict()
+                bidderId = bid[2]
+                cursor.execute("SELECT * FROM users WHERE id=" + str(bidderId))
+                firstBidderWithId = cursor.fetchone()
+                currBid['bidder'] = firstBidderWithId[1]
+                currBid['bidPrice'] = bid[3]
+                currBid['bidQuant'] = bid[4]
+                currBid['bidDate'] = bid[5]
+                currBid['bidId'] = bid[0]
+                bidsList.append(currBid)
+        except psycopg2.ProgrammingError as error:
+            pass
 
         myItemsDict['bids'] = bidsList
 
         listOfDicts.append(myItemsDict)
 
-    dictMyItems = dict()
     dictMyItems['myUpdatedListings'] = listOfDicts
 
     return dictMyItems
@@ -284,10 +293,9 @@ def updateQuantRemaining():
 
     cursor.execute("SELECT * FROM bids WHERE item_id='" + itemId + "';")
     bids = cursor.fetchall()
-    print("bids: ", bids)
+    # print("bids: ", bids)
     bidsList = []
     for bid in bids:
-        print("bid[7]: ", bid[7])
         if (bid[7] != None and int(bid[7]) > 0): # accept quant is valid
             cursor.execute("SELECT quantity FROM items WHERE id=" + itemId + ";")
             listingQuant = cursor.fetchone()[0]

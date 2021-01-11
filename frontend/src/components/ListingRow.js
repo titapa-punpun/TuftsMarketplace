@@ -84,6 +84,7 @@ export default function ListingRow({itemAndBid, updateMyListings, updateQuantRem
 
     const handleSave = () => {
         const archiveDate = new Date();
+        console.log("bids: ", bids);
         const body = {
             itemId: itemId,
             bids: bids,
