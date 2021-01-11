@@ -81,6 +81,7 @@ class MyListings extends React.Component {
 
     // Purpose: Fetches items with updated quantity left for sale (called by child component)
     updateQuantRemaining(itemId, bids) {
+        console.log("in updateQuantRemaining");
         const {userID} = this.props;
         const body = {
             userID: userID,

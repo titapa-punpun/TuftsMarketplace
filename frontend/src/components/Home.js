@@ -15,15 +15,9 @@ class Home extends React.Component {
             .then(response => {this.setState({items: response.allItems})})
     }
 
-    // logout() {
-    //     if (this.state.setLoggedIn == false)
-    //         return <Redirect to='/login'/>
-    // }
-
     render() {
         const items = this.state.items;
-        // const {setLoggedIn} = this.props;
-        // console.log('setLoggedIn: ', setLoggedIn);
+        console.log("items: ", items);
         return (
             <div>
                 <h1>Items Available</h1>

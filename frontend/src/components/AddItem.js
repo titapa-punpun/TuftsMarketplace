@@ -101,6 +101,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             name = {item.name}
+                            value={item.name}
                             onChange = {(event) => this.handleChange(event, 'name')}
                         /><br/>
                     </label>
@@ -109,6 +110,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             description = {this.state.item.description}
+                            value={item.description}
                             onChange = {(event) => this.handleChange(event, 'description')}
                         /><br/>
                     </label>
@@ -117,6 +119,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             price = {this.state.item.price}
+                            value={item.price}
                             onChange = {(event) => this.handleChange(event, 'price')}
                         /><br/>
                     </label>
@@ -125,6 +128,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             quantity = {this.state.item.quantity}
+                            value={item.quantity}
                             onChange = {(event) => this.handleChange(event, 'quantity')}
                         /><br/>
                     </label>
@@ -133,6 +137,7 @@ class AddItem extends React.Component {
                         <input
                             type = "text"
                             quantity = {this.state.item.sellerID}
+                            value={item.sellerID}
                             onChange = {(event) => this.handleChange(event, 'sellerID')}
                         /><br/>
                     </label>

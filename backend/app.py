@@ -77,7 +77,7 @@ def addItem():
     quantity = "'" + (content.get('item')).get('quantity') + "',"
     sellerID = "'" + (content.get('item')).get('sellerID') + "',"
     dateListed = "'" + content.get('dateListed') + "'"
-    cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quantity, date_listed) "
+    cursor.execute("INSERT INTO items (item_name, description, price, seller_id, quantity, date_listed)"
                    "VALUES (" + itemName + description + price + sellerID + quantity + dateListed + ")")
     connection.commit()
     return {'success': True}
