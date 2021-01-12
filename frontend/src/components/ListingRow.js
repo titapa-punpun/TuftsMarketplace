@@ -113,7 +113,8 @@ export default function ListingRow({itemAndBid, updateMyListings, updateQuantRem
                     console.log('big bad');
                 } else {
                     console.log('success');
-                    updateQuantRemaining(itemId, bids);
+                    if (!archiveItem())
+                        updateQuantRemaining(itemId, bids);
                 }
             }).catch(x => {
                 console.log('no data', x);
