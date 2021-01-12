@@ -232,7 +232,7 @@ def updateListingsAfterArchive():
         myItemsDict['listDate'] = updatedListing[8]
         myItemsDict['resolved'] = updatedListing[7]
 
-        print("ITEM ID: ", str(itemId))
+        # print("ITEM ID: ", str(itemId))
 
         bidsList = []
         try:
@@ -286,26 +286,31 @@ def saveBidResults():
 @app.route('/updateQuantRemaining', methods=['POST'])
 def updateQuantRemaining():
     content = request.json
-    itemId = content.get('itemId')
-    itemId = str(itemId)
+    itemId = str(content.get('itemId'))
     bids = content.get('bids')
     userID = "'" + str(content.get('userID')) + "'"
 
     cursor.execute("SELECT * FROM bids WHERE item_id='" + itemId + "';")
     bids = cursor.fetchall()
-    # print("bids: ", bids)
+    print("bids: ", bids)
     bidsList = []
     for bid in bids:
-        if (bid[7] != None and int(bid[7]) > 0): # accept quant is valid
+        acceptQuant = bid[7]
+        bidRejected = bid[6]
+        print("bid rejected: ", bidRejected)
+        print("accept quant: ", acceptQuant)
+        if (acceptQuant != None and int(acceptQuant) > 0 and bidRejected != True): # accept quant is valid
             cursor.execute("SELECT quantity FROM items WHERE id=" + itemId + ";")
             listingQuant = cursor.fetchone()[0]
-            remainingQuant = int(listingQuant) - int(bid[7])
-            cursor.execute("UPDATE items SET quantity="+ str(remainingQuant) + ";")
+            remainingQuant = int(listingQuant) - int(acceptQuant)
+            print("quant remaining: ", remainingQuant)
+            cursor.execute("UPDATE items SET quantity="+ str(remainingQuant) + " WHERE id=" + itemId + ";")
         currBid = dict()
         bidderId = bid[2]
+        print("bidder id: ", bidderId)
         cursor.execute("SELECT * FROM users WHERE id=" + str(bidderId))
-        firstBidderWithId = cursor.fetchone()
-        currBid['bidder'] = firstBidderWithId[1]
+        firstBidder = cursor.fetchone()
+        currBid['bidder'] = firstBidder[1]
         currBid['bidPrice'] = bid[3]
         currBid['bidQuant'] = bid[4]
         currBid['bidDate'] = bid[5]
