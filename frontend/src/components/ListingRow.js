@@ -22,7 +22,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function ListingRow({itemAndBid, updateMyListings, updateQuantRemaining}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
+export default function ListingRow({itemAndBid, updateListingsAfterArchive, updateQuantRemaining}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
     const {itemId, itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid; // destructuring
 
     const [openTable, setOpenTable] = useState(false); // opening of collapsible table
@@ -266,7 +266,7 @@ export default function ListingRow({itemAndBid, updateMyListings, updateQuantRem
                                             <Button
                                                 onClick={() => {
                                                     setOpenArchiveMessage(false);
-                                                    updateMyListings();
+                                                    updateListingsAfterArchive();
                                                 }}
                                                 color="primary" autoFocus>
                                                 Ok

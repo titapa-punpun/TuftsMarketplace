@@ -208,8 +208,8 @@ def getMyItems():
     # return {'allMyItems': listOfDicts}
     return dictMyItems
 
-@app.route('/updateMyListings', methods=['POST'])
-def updateMyListings():
+@app.route('/updateListingsAfterArchive', methods=['POST'])
+def updateListingsAfterArchive():
     dictMyItems = dict()
     content = request.json
     userID = "'" + str(content.get('userID')) + "'"

@@ -14,7 +14,7 @@ class MyListings extends React.Component {
         this.state = {
             itemsAndBids: [],
         };
-        this.updateMyListings = this.updateMyListings.bind(this);
+        this.updateListingsAfterArchive = this.updateListingsAfterArchive.bind(this);
         this.updateQuantRemaining = this.updateQuantRemaining.bind(this);
     }
 
@@ -49,13 +49,13 @@ class MyListings extends React.Component {
     }
 
     // Purpose: Only fetches items NOT archived (called by child component)
-    updateMyListings() {
-        console.log("in updateMyListings()");
+    updateListingsAfterArchive() {
+        console.log("in updateListingsAfterArchive()");
         const {userID} = this.props;
         const body = {
             userID: userID,
         };
-        fetch('http://127.0.0.1:5000/updateMyListings',
+        fetch('http://127.0.0.1:5000/updateListingsAfterArchive',
             {
                 method: 'POST',
                 body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
@@ -92,9 +92,9 @@ class MyListings extends React.Component {
         fetch('http://127.0.0.1:5000/updateQuantRemaining',
             {
                 method: 'POST',
-                body: JSON.stringify(body), // body is originally a JS object, but this body needs to receive a JSON string
+                body: JSON.stringify(body),
                 headers: {
-                    'Content-Type': 'application/json' // tells receiver (endpoint) what type 'body' is
+                    'Content-Type': 'application/json'
                 }
             }
         ).then(response => response.status)
@@ -146,7 +146,7 @@ class MyListings extends React.Component {
                                 <ListingRow
                                     key={itemAndBid.itemId}
                                     itemAndBid={itemAndBid}
-                                    updateMyListings={this.updateMyListings}
+                                    updateListingsAfterArchive={this.updateListingsAfterArchive}
                                     updateQuantRemaining={this.updateQuantRemaining}
                                 />
                             ))}
