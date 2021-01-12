@@ -112,7 +112,7 @@ class MyListings extends React.Component {
 
     render() {
         const {itemsAndBids} = this.state;
-        console.log("items and bids: ", itemsAndBids)
+        // console.log("items and bids: ", itemsAndBids)
         return (
             <div>
                 <h2>My Listings</h2>

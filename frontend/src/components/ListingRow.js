@@ -84,7 +84,7 @@ export default function ListingRow({itemAndBid, updateMyListings, updateQuantRem
 
     const handleSave = () => {
         const archiveDate = new Date();
-        console.log("bids: ", bids);
+        // console.log("bids: ", bids);
         const body = {
             itemId: itemId,
             bids: bids,
@@ -97,7 +97,6 @@ export default function ListingRow({itemAndBid, updateMyListings, updateQuantRem
         }
         if (archiveItem()) {
             setOpenArchiveMessage(true);
-            updateMyListings();
         }
         fetch('http://127.0.0.1:5000/saveBidResults',
             {
@@ -264,7 +263,12 @@ export default function ListingRow({itemAndBid, updateMyListings, updateQuantRem
                                             </DialogContentText>
                                         </DialogContent>
                                         <DialogActions>
-                                            <Button onClick={() => setOpenArchiveMessage(false)} color="primary" autoFocus>
+                                            <Button
+                                                onClick={() => {
+                                                    setOpenArchiveMessage(false);
+                                                    updateMyListings();
+                                                }}
+                                                color="primary" autoFocus>
                                                 Ok
                                             </Button>
                                         </DialogActions>
@@ -281,7 +285,9 @@ export default function ListingRow({itemAndBid, updateMyListings, updateQuantRem
                                             </DialogContentText>
                                         </DialogContent>
                                         <DialogActions>
-                                            <Button onClick={() => setOpenInvalidAcceptQuantMsg(false)} color="primary" autoFocus>
+                                            <Button
+                                                onClick={() => setOpenInvalidAcceptQuantMsg(false)}
+                                                color="primary" autoFocus>
                                                 Ok
                                             </Button>
                                         </DialogActions>
