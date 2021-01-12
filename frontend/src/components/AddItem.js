@@ -99,49 +99,49 @@ class AddItem extends React.Component {
                     <label>
                         Item Name:
                         <input
-                            type = "text"
-                            name = {item.name}
+                            type="text"
+                            name={item.name}
                             value={item.name}
-                            onChange = {(event) => this.handleChange(event, 'name')}
+                            onChange={(event) => this.handleChange(event, 'name')}
                         /><br/>
                     </label>
                     <label>
                         Item Description:
                         <input
-                            type = "text"
-                            description = {this.state.item.description}
+                            type="text"
+                            description={this.state.item.description}
                             value={item.description}
-                            onChange = {(event) => this.handleChange(event, 'description')}
+                            onChange={(event) => this.handleChange(event, 'description')}
                         /><br/>
                     </label>
                     <label>
                         Item Price:
                         <input
-                            type = "text"
-                            price = {this.state.item.price}
+                            type="text"
+                            price={this.state.item.price}
                             value={item.price}
-                            onChange = {(event) => this.handleChange(event, 'price')}
+                            onChange={(event) => this.handleChange(event, 'price')}
                         /><br/>
                     </label>
                     <label>
                         Quantity of Item:
                         <input
-                            type = "text"
-                            quantity = {this.state.item.quantity}
+                            type="text"
+                            quantity={this.state.item.quantity}
                             value={item.quantity}
-                            onChange = {(event) => this.handleChange(event, 'quantity')}
+                            onChange={(event) => this.handleChange(event, 'quantity')}
                         /><br/>
                     </label>
                     <label>
                         Seller ID:
                         <input
-                            type = "text"
-                            quantity = {this.state.item.sellerID}
+                            type="text"
+                            quantity={this.state.item.sellerID}
                             value={item.sellerID}
-                            onChange = {(event) => this.handleChange(event, 'sellerID')}
+                            onChange={(event) => this.handleChange(event, 'sellerID')}
                         /><br/>
                     </label>
-                    <input type="submit" value = "Submit" />
+                    <input type="submit" value="Submit" />
                 </form>
                 {this.state.submitted}
             </div>
