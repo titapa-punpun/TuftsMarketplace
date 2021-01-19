@@ -21,6 +21,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+Function.prototype.fired = false;
 
 export default function ListingRow({itemAndBid, updateListingsAfterArchive, updateQuantRemaining}) { // destructuring in place (from props). alternative is const {itemAndBid} = props;
     const {itemId, itemName, listQuant, listPrice, listDate, resolved, bids} = itemAndBid; // destructuring
@@ -84,7 +85,6 @@ export default function ListingRow({itemAndBid, updateListingsAfterArchive, upda
 
     const handleSave = () => {
         const archiveDate = new Date();
-        // console.log("bids: ", bids);
         const body = {
             itemId: itemId,
             bids: bids,
@@ -141,6 +141,7 @@ export default function ListingRow({itemAndBid, updateListingsAfterArchive, upda
                 totalAcceptQuant + parseInt(bid.acceptQuant), 0) <= parseInt(listQuant)));
     };
 
+    console.log("bids: ", bids);
     return (
         <React.Fragment>
             <TableRow>
@@ -230,6 +231,7 @@ export default function ListingRow({itemAndBid, updateListingsAfterArchive, upda
                                                                     size="small"
                                                                     value={bid.acceptQuant} // controlled component
                                                                     onChange={(e) => handleChange(e, bid.bidId, 'acceptBid')}
+                                                                    disabled={!archiveItem() && bid.bidSaved === true}
                                                                 />
                                                             </form>
                                                         </div>
@@ -239,6 +241,7 @@ export default function ListingRow({itemAndBid, updateListingsAfterArchive, upda
                                                             <Checkbox
                                                                 checked={bid.rejected} // controlled component
                                                                 onChange={(e) => handleChange(e, bid.bidId, 'rejectBid')}
+                                                                disabled={!archiveItem() && bid.bidSaved === true}
                                                             />
                                                         </div>
                                                     </TableCell>
