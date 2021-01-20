@@ -35,7 +35,7 @@ export default function ArchiveRow({archivedItem}) {
                     {listQuant}
                 </TableCell>
                 <TableCell>
-                    {listPrice}
+                    ${listPrice}
                 </TableCell>
                 <TableCell>
                     {listDate}
@@ -87,7 +87,7 @@ export default function ArchiveRow({archivedItem}) {
                                                     {bid.bidQuant}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {bid.bidPrice}
+                                                    ${bid.bidPrice}
                                                 </TableCell>
                                                 <TableCell>
                                                     {archiveStatus}

@@ -88,7 +88,7 @@ export default function ListingRow({itemAndBid, updateListingsAfterArchive, upda
         const body = {
             itemId: itemId,
             bids: bids,
-            archived: archiveItem(),
+            // archived: archiveItem(),
             archiveDate: archiveDate.toDateString(),
         };
         if (!validTotalAcceptQuant()) {
@@ -141,7 +141,6 @@ export default function ListingRow({itemAndBid, updateListingsAfterArchive, upda
                 totalAcceptQuant + parseInt(bid.acceptQuant), 0) <= parseInt(listQuant)));
     };
 
-    console.log("bids: ", bids);
     return (
         <React.Fragment>
             <TableRow>

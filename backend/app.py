@@ -263,21 +263,32 @@ def updateListingsAfterArchive():
 def saveBidResults():
     content = request.json # this gets everything in frontend's 'body'
     bids = content.get('bids')
-    archived = content.get('archived')
+    print("bids: ", bids)
+    # archived = content.get('archived')
     dateArchived = "'" + content.get('archiveDate') + "'"
     itemId = content.get('itemId')
     itemId = str(itemId)
+    totalAcceptQuant = 0
 
-    # Updating 'rejected' and 'accept_quant' fields of 'bids' table
+    cursor.execute("SELECT quantity FROM items WHERE id='" + itemId + "';")
+    listQuant = int(cursor.fetchone()[0])
+    print("listQuant: ", listQuant)
+
     for bid in bids:
+        # Update 'rejected' and 'accept_quant' fields of 'bids' table
         cursor.execute("UPDATE bids SET rejected=TRUE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=TRUE;")
         cursor.execute("UPDATE bids SET rejected=FALSE WHERE id=" + str(bid['bidId']) + " AND " + str(bid['rejected']) + "=FALSE;")
         cursor.execute("UPDATE bids SET saved=TRUE WHERE id=" + str(bid['bidId']) + " AND item_id='" + itemId + "';")
-        print(bid)
         if (bid['acceptQuant'] != '' and int(bid['acceptQuant']) > 0): # accept quant is valid
             cursor.execute("UPDATE bids SET accept_quant=" + str(bid['acceptQuant']) + " WHERE id=" + str(bid['bidId']) + ";")
 
-    if (archived == True):
+        # Check if sum of all accepted quantities equals the quantity of item listed for sale
+        totalAcceptQuant = totalAcceptQuant + int(bid['acceptQuant'])
+
+    print("total accept quant: ", totalAcceptQuant)
+
+    if (totalAcceptQuant == listQuant):
+        print("archiving item")
         cursor.execute("UPDATE items SET archived=TRUE WHERE id=" + itemId + ";")
         cursor.execute("UPDATE items SET date_archived=" + dateArchived + " WHERE id=" + itemId + ";")
 
