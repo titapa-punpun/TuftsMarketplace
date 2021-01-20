@@ -44,10 +44,10 @@ def verifyUser():
 
     return {'success': True, 'userID': userID}
 
-@app.route('/getAllItems', methods=['GET'])
-def getAllItems():
+@app.route('/getAllAvailableItems', methods=['GET'])
+def getAllAvailableItems():
     content = request.json
-    cursor.execute("SELECT * FROM items")
+    cursor.execute("SELECT * FROM items WHERE archived=FALSE")
     # retrieve every row in 'items' table
     rows = cursor.fetchall()
     listOfDicts = []
