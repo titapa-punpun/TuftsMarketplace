@@ -263,14 +263,13 @@ def updateListingsAfterArchive():
 def saveBidResults():
     content = request.json # this gets everything in frontend's 'body'
     bids = content.get('bids')
-    print("bids: ", bids)
-    # archived = content.get('archived')
+    # print("bids: ", bids)
     dateArchived = "'" + content.get('archiveDate') + "'"
     itemId = content.get('itemId')
     itemId = str(itemId)
     totalAcceptQuant = 0
 
-    cursor.execute("SELECT quantity FROM items WHERE id='" + itemId + "';")
+    cursor.execute("SELECT quantity FROM items WHERE id=" + itemId + ";")
     listQuant = int(cursor.fetchone()[0])
     print("listQuant: ", listQuant)
 
@@ -285,10 +284,10 @@ def saveBidResults():
         # Check if sum of all accepted quantities equals the quantity of item listed for sale
         totalAcceptQuant = totalAcceptQuant + int(bid['acceptQuant'])
 
-    print("total accept quant: ", totalAcceptQuant)
+    # print("total accept quant: ", totalAcceptQuant)
 
     if (totalAcceptQuant == listQuant):
-        print("archiving item")
+        # print("archiving item")
         cursor.execute("UPDATE items SET archived=TRUE WHERE id=" + itemId + ";")
         cursor.execute("UPDATE items SET date_archived=" + dateArchived + " WHERE id=" + itemId + ";")
 
@@ -304,20 +303,25 @@ def updateQuantRemaining():
 
     cursor.execute("SELECT * FROM bids WHERE item_id='" + itemId + "';")
     bids = cursor.fetchall()
+    print("bids: ", bids)
     bidsList = []
     for bid in bids:
         acceptQuant = bid[7]
+        print("acceptQuant: ", acceptQuant)
         bidRejected = bid[6]
+        print("bidRejected: ", bidRejected)
         if (acceptQuant != None and int(acceptQuant) > 0 and bidRejected != True): # accept quant is valid
-            cursor.execute("SELECT quantity FROM items WHERE id=" + itemId + ";")
+            cursor.execute("SELECT quantity FROM items WHERE id='" + itemId + "';")
             listingQuant = cursor.fetchone()[0]
             remainingQuant = int(listingQuant) - int(acceptQuant)
-            cursor.execute("UPDATE items SET quantity="+ str(remainingQuant) + " WHERE id=" + itemId + ";")
+            cursor.execute("UPDATE items SET quantity=" + str(remainingQuant) + " WHERE id=" + itemId + ";")
+            print("new updated quant: ", str(remainingQuant))
         currBid = dict()
         bidderId = bid[2]
         cursor.execute("SELECT * FROM users WHERE id=" + str(bidderId))
-        firstBidder = cursor.fetchone()
-        currBid['bidder'] = firstBidder[1]
+        bidder = cursor.fetchone()
+        print("bidder: ", bidder)
+        currBid['bidder'] = bidder[1]
         currBid['bidPrice'] = bid[3]
         currBid['bidQuant'] = bid[4]
         currBid['bidDate'] = bid[5]

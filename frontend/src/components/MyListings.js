@@ -89,6 +89,7 @@ class MyListings extends React.Component {
             itemId: itemId,
             bids: bids,
         };
+        console.log("bids: ", bids);
         fetch('http://127.0.0.1:5000/updateQuantRemaining',
             {
                 method: 'POST',
