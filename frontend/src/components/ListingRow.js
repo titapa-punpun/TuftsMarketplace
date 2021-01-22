@@ -96,8 +96,6 @@ export default function ListingRow({itemAndBid, updateListingsAfterArchive, upda
         }
         if (archiveItem()) {
             setOpenArchiveMessage(true);
-        } else {
-            updateQuantRemaining(itemId, bids);
         }
         fetch('http://127.0.0.1:5000/saveBidResults',
             {
@@ -113,6 +111,7 @@ export default function ListingRow({itemAndBid, updateListingsAfterArchive, upda
                     console.log('big bad');
                 } else {
                     console.log('success');
+                    updateQuantRemaining(itemId, bids);
                 }
             }).catch(x => {
                 console.log('no data', x);

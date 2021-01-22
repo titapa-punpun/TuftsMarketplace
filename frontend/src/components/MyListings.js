@@ -77,7 +77,7 @@ class MyListings extends React.Component {
             }).catch(x => {
             console.log('no data', x);
             return('no data')
-        })
+        });
     }
 
     // Purpose: Fetches items with updated quantity left for sale (called by child component)
@@ -109,6 +109,7 @@ class MyListings extends React.Component {
             console.log('no data', x);
             return ('no data')
         });
+        this.componentDidMount();
     }
 
     render() {
